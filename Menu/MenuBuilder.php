@@ -4,7 +4,6 @@ namespace Maestro\Bundle\NavigationBundle\Menu;
 
 use Knp\Menu\FactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Maestro\Bundle\NavigationBundle\Menu\ConfigurationLoader;
 
 class MenuBuilder
 {
