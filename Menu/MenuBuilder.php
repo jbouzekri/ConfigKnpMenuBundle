@@ -24,8 +24,8 @@ class MenuBuilder
     /**
      * Constructor
      *
-     * @param \Knp\Menu\FactoryInterface $factory
-     * @param \Maestro\Bundle\NavigationBundle\Menu\ConfigurationLoader $configuration
+     * @param \Knp\Menu\FactoryInterface $factory the knp menu factory
+     * @param array $configuration An array of menu configuration
      */
     public function __construct(FactoryInterface $factory, $configuration)
     {
@@ -34,9 +34,9 @@ class MenuBuilder
     }
 
     /**
-     * Load a menu configuration
+     * Load configuration of menus
      *
-     * @param array $configuration
+     * @param array $configuration An array of menu configuration
      */
     public function setConfiguration(array $configuration)
     {
@@ -46,15 +46,15 @@ class MenuBuilder
     /**
      * Create a menu from the configuration loaded
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param string $type
+     * @param \Symfony\Component\HttpFoundation\Request $request the symfony request
+     * @param string $type the type of menu to load. It must match a key in the first level of configuration array
      *
      * @return \Knp\Menu\MenuItem
      */
     public function createMenu(Request $request, $type)
     {
         $menu = $this->factory->createItem('root');
-var_dump($this->configuration);
+
         $menu->addChild('Home', array('route' => 'admin_homepage'));
         // ... add more children
 

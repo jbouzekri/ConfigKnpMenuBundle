@@ -38,9 +38,10 @@ class MaestroNavigationExtension extends Extension
         foreach ($configuredMenus as $rootName => $menuConfiguration) {
             $configuration = new NavigationConfiguration();
             $configuration->setMenuRootName($rootName);
-            $config = $this->processConfiguration($configuration, array($rootName => $menuConfiguration));
+            $this->processConfiguration($configuration, array($rootName => $menuConfiguration));
         }
 
+        // Last argument of this service is always the menu configuration
         $container
             ->getDefinition('maestro.menu.builder')
             ->addArgument($configuredMenus);
@@ -48,15 +49,15 @@ class MaestroNavigationExtension extends Extension
     }
 
     /**
-     * Merge Bundle Configuration with Admin Menu Configuration
+     * Merge Bundle Configuration with parsed Menu Configuration
      *
-     * @param array $adminMenu the current admin menu configuration
+     * @param array $configuredMenus the current bundle menu configuration
      * @param array $config the configuration parsed in the bundle
      *
      * @return array
      */
-    protected function mergeConfig(array $adminMenu, array $config)
+    protected function mergeConfig(array $configuredMenus, array $config)
     {
-        return array_merge($adminMenu, $config);
+        return array_merge($configuredMenus, $config);
     }
 }
