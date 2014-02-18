@@ -1,0 +1,8 @@
+maestro_admin_menu:
+    this_is_empty_menu:
+        url: #test
+        label: This is the label
+        children:
+            post_menu:
+                url: @post_list
+                label: Post List
