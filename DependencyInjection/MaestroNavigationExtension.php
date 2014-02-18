@@ -15,30 +15,36 @@ use Symfony\Component\Config\FileLocator;
  */
 class MaestroNavigationExtension extends Extension
 {
-    const ADMIN_MENU = "maestro_admin_menu";
-
     /**
      * {@inheritDoc}
      */
     public function load(array $configs, ContainerBuilder $container)
     {
-        $adminMenu = array();
+        $configuredMenus = array();
 
         foreach ($container->getParameter('kernel.bundles') as $bundle) {
             $reflection = new \ReflectionClass($bundle);
             if (is_file($file = dirname($reflection->getFilename()) . '/Resources/config/navigation.yml')) {
                 $bundleConfig = Yaml::parse(realpath($file));
 
-                $adminMenu = $this->mergeConfig($adminMenu, $bundleConfig);
+                $configuredMenus = $this->mergeConfig($configuredMenus, $bundleConfig);
             }
         }
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
 
+        // validate menu configurations
+        foreach ($configuredMenus as $rootName => $menuConfiguration) {
+            $configuration = new NavigationConfiguration();
+            $configuration->setMenuRootName($rootName);
+            $config = $this->processConfiguration($configuration, array($rootName => $menuConfiguration));
+        }
+
         $container
             ->getDefinition('maestro.menu.builder')
-            ->addMethodCall('loadConfiguration', array($adminMenu));
+            ->addArgument($configuredMenus);
+
     }
 
     /**

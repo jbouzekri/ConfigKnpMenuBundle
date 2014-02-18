@@ -28,9 +28,10 @@ class MenuBuilder
      * @param \Knp\Menu\FactoryInterface $factory
      * @param \Maestro\Bundle\NavigationBundle\Menu\ConfigurationLoader $configuration
      */
-    public function __construct(FactoryInterface $factory)
+    public function __construct(FactoryInterface $factory, $configuration)
     {
         $this->factory = $factory;
+        $this->configuration = $configuration;
     }
 
     /**
@@ -38,7 +39,7 @@ class MenuBuilder
      *
      * @param array $configuration
      */
-    public function loadConfiguration(array $configuration)
+    public function setConfiguration(array $configuration)
     {
         $this->configuration = $configuration;
     }
