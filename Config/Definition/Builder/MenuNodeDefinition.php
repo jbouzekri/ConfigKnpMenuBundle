@@ -31,6 +31,8 @@ class MenuNodeDefinition extends ArrayNodeDefinition
                     ->end()
                     ->scalarNode('uri')->end()
                     ->scalarNode('label')->end()
+                    ->booleanNode('display')->defaultTrue()->end()
+                    ->booleanNode('displayChildren')->defaultTrue()->end()
                     ->integerNode('order')->end()
                     ->arrayNode('attributes')
                         ->prototype('variable')

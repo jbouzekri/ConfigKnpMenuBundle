@@ -110,6 +110,16 @@ class MenuBuilder
             $item->setAttributes($configuration['attributes']);
         }
 
+        // set display
+        if (isset($configuration['display'])) {
+            $item->setDisplay($configuration['display']);
+        }
+
+        // set displayChildren
+        if (isset($configuration['displayChildren'])) {
+            $item->setDisplayChildren($configuration['displayChildren']);
+        }
+
         // Recursive loop for appending children menu items
         if (!empty($configuration['children'])) {
             $this->sortItems($configuration['children']);
