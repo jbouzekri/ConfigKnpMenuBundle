@@ -61,6 +61,7 @@ class MenuBuilder
 
         $menu = $this->factory->createItem('root');
 
+        $this->sortItems($this->configuration[$type]);
         foreach ($this->configuration[$type] as $name => $childConfiguration) {
             $this->createItem($menu, $name, $childConfiguration);
         }
@@ -81,9 +82,26 @@ class MenuBuilder
         $item = $parentItem->addChild($name);
 
         if (!empty($configuration['children'])) {
+            $this->sortItems($configuration['children']);
             foreach ($configuration['children'] as $childName => $childConfiguration) {
                 $this->createItem($item, $childName, $childConfiguration);
             }
         }
+    }
+
+    /**
+     * Sort items according to the order key value
+     *
+     * @param array $items an array of items
+     */
+    protected function sortItems(&$items)
+    {
+        uasort($items, function ($item1, $item2) {
+            if (empty($item1['order']) || empty($item2['order']) || $item1['order'] == $item2['order']) {
+                return 0;
+            }
+
+            return ($item1['order'] < $item2['order']) ? -1 : 1;
+        });
     }
 }
