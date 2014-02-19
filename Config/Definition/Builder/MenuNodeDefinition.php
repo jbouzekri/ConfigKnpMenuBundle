@@ -24,7 +24,12 @@ class MenuNodeDefinition extends ArrayNodeDefinition
         return $this
             ->prototype('array')
                 ->children()
-                    ->scalarNode('url')->end()
+                    ->scalarNode('route')->end()
+                    ->arrayNode('routeParameters')
+                        ->prototype('variable')
+                        ->end()
+                    ->end()
+                    ->scalarNode('uri')->end()
                     ->scalarNode('label')->end()
                     ->integerNode('order')->end()
                     ->menuNode('children')->menuNodeHierarchy($depth - 1)

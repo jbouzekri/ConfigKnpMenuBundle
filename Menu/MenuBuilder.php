@@ -55,13 +55,18 @@ class MenuBuilder
      */
     public function createMenu(Request $request, $type)
     {
+        // Check if the menu type asked by the service has a configuration
         if (empty($this->configuration[$type])) {
             throw new Exception\MenuConfigurationNotFoundException($type." configuration not found");
         }
 
+        // Create menu root item
         $menu = $this->factory->createItem('root');
 
+        // Sort first level of items
         $this->sortItems($this->configuration[$type]);
+
+        // Append item recursively to root
         foreach ($this->configuration[$type] as $name => $childConfiguration) {
             $this->createItem($menu, $name, $childConfiguration);
         }
@@ -79,8 +84,28 @@ class MenuBuilder
      */
     protected function createItem($parentItem, $name, $configuration)
     {
-        $item = $parentItem->addChild($name);
+        // Manage routing options
+        $options = array();
+        if (!empty($configuration['route'])) {
+            $options['route'] = $configuration['route'];
+            if (!empty($configuration['routeParameters'])) {
+                $options['routeParameters'] = $configuration['routeParameters'];
+            }
+        }
 
+        $item = $parentItem->addChild($name, $options);
+
+        // Set label
+        if (!empty($configuration['label'])) {
+            $item->setLabel($configuration['label']);
+        }
+
+        // Set uri
+        if (!empty($configuration['uri'])) {
+            $item->setUri($configuration['uri']);
+        }
+
+        // Recursive loop for appending children menu items
         if (!empty($configuration['children'])) {
             $this->sortItems($configuration['children']);
             foreach ($configuration['children'] as $childName => $childConfiguration) {

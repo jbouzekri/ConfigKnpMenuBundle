@@ -1,21 +1,22 @@
 maestro_admin_menu:
     this_is_empty_menu:
-        url: "#test"
-        label: This is the label
+        uri: "#test"
         order: 2
         children:
             post_menu_2:
-                url: "@post_list"
+                route: "admin_homepage"
+                routeParameters:
+                    id: 52
                 label: Post List 2
                 order: 2
             post_menu:
-                url: "@post_list"
+                uri: "@post_list"
                 label: Post List
     this_is_empty_menu_2:
-        url: "#test"
+        uri: "#test"
         label: This is the label 2
         order: 1
         children:
             post_menu_bis:
-                url: "@post_list"
+                uri: "@post_list"
                 label: Post List
