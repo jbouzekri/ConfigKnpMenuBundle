@@ -27,7 +27,9 @@ class MaestroNavigationExtension extends Extension
             if (is_file($file = dirname($reflection->getFilename()) . '/Resources/config/navigation.yml')) {
                 $bundleConfig = Yaml::parse(realpath($file));
 
-                $configuredMenus = $this->mergeConfig($configuredMenus, $bundleConfig);
+                if (is_array($bundleConfig)) {
+                    $configuredMenus = array_replace_recursive($configuredMenus, $bundleConfig);
+                }
             }
         }
 
@@ -38,7 +40,7 @@ class MaestroNavigationExtension extends Extension
         foreach ($configuredMenus as $rootName => $menuConfiguration) {
             $configuration = new NavigationConfiguration();
             $configuration->setMenuRootName($rootName);
-            $this->processConfiguration($configuration, array($rootName => $menuConfiguration));
+            $menuConfiguration[$rootName] = $this->processConfiguration($configuration, array($rootName => $menuConfiguration));
         }
 
         // Last argument of this service is always the menu configuration
@@ -46,18 +48,5 @@ class MaestroNavigationExtension extends Extension
             ->getDefinition('maestro.menu.builder')
             ->addArgument($configuredMenus);
 
-    }
-
-    /**
-     * Merge Bundle Configuration with parsed Menu Configuration
-     *
-     * @param array $configuredMenus the current bundle menu configuration
-     * @param array $config the configuration parsed in the bundle
-     *
-     * @return array
-     */
-    protected function mergeConfig(array $configuredMenus, array $config)
-    {
-        return array_merge($configuredMenus, $config);
     }
 }

@@ -64,10 +64,10 @@ class MenuBuilder
         $menu = $this->factory->createItem('root');
 
         // Sort first level of items
-        $this->sortItems($this->configuration[$type]);
+        $this->sortItems($this->configuration[$type]['tree']);
 
         // Append item recursively to root
-        foreach ($this->configuration[$type] as $name => $childConfiguration) {
+        foreach ($this->configuration[$type]['tree'] as $name => $childConfiguration) {
             $this->createItem($menu, $name, $childConfiguration);
         }
 
@@ -103,6 +103,11 @@ class MenuBuilder
         // Set uri
         if (!empty($configuration['uri'])) {
             $item->setUri($configuration['uri']);
+        }
+
+        // set attributes
+        if (!empty($configuration['attributes'])) {
+            $item->setAttributes($configuration['attributes']);
         }
 
         // Recursive loop for appending children menu items
