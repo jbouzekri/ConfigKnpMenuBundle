@@ -16,7 +16,7 @@ services:
         factory_method: createMenu
         arguments: 
           - "@request"
-          - "admin"
+          - "maestro_admin_menu"
         scope: request
         tags:
             - { name: knp_menu.menu, alias: admin }
