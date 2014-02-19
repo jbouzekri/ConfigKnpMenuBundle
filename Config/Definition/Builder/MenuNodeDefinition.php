@@ -32,6 +32,10 @@ class MenuNodeDefinition extends ArrayNodeDefinition
                     ->scalarNode('uri')->end()
                     ->scalarNode('label')->end()
                     ->integerNode('order')->end()
+                    ->arrayNode('attributes')
+                        ->prototype('variable')
+                        ->end()
+                    ->end()
                     ->menuNode('children')->menuNodeHierarchy($depth - 1)
                 ->end()
             ->end();
