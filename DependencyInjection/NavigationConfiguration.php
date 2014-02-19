@@ -33,15 +33,4 @@ class NavigationConfiguration implements ConfigurationInterface
 
         return $treeBuilder;
     }
-
-    /**
-     * Add children nodes to menu
-     *
-     * @param $node NodeBuilder
-     * @return Configuration
-     */
-    protected function setChildren($node)
-    {
-
-    }
 }
