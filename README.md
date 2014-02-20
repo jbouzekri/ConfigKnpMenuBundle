@@ -45,7 +45,7 @@ Documentation
 In order to use this bundle, you must define your menu configuration in a navigation.yml file in your bundle.
 
 Example :
-``` json
+``` yml
 my_mega_menu:
     tree:
         first_level_item:
@@ -56,7 +56,7 @@ my_mega_menu:
 ```
 
 Then you need to define a service.
-``` json
+``` yml
 maestro.menu.admin:
     class: Knp\Menu\MenuItem
     factory_service: maestro.menu.builder
@@ -81,7 +81,7 @@ Configuration
 
 This is the available configuration definition for an item.
 
-``` json
+``` yml
 my_mega_menu:
     tree:
         first_level_item:
