@@ -1,0 +1,16 @@
+{
+    "name": "maestro/navigation-bundle",
+    "type": "symfony-bundle",
+    "description": "Maestro Menu Navigation Bundle",
+    "keywords": ["Maestro", "UI", "User Interface", "Menu", "Navigation", "Symfony"],
+    "homepage": "https://github.com/maestro-platform/MaestroNavigationBundle",
+    "license": "MIT",
+    "require": {
+        "knplabs/knp-menu-bundle": "dev-master"
+    },
+    "autoload": {
+        "psr-0": { "Maestro\\Bundle\\NavigationBundle": "" }
+    },
+    "target-dir": "Maestro/Bundle/NavigationBundle",
+    "minimum-stability": "dev"
+}
