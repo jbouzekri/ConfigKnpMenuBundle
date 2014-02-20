@@ -16,11 +16,10 @@ namespace Maestro\Bundle\NavigationBundle;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
- * Description of MaestroNavigationBundle
+ * Bundle definition
  *
  * @author jobou
  */
 class MaestroNavigationBundle extends Bundle
 {
-    //put your code here
 }

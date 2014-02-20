@@ -1,10 +1,26 @@
 <?php
 
+/**
+ * Copyright 2014 Jonathan Bouzekri. All rights reserved.
+ *
+ * @copyright Copyright 2014 Jonathan Bouzekri <jonathan.bouzekri@gmail.com>
+ * @license https://github.com/jbouzekri/MaestroNavigationBundle/blob/master/LICENSE
+ * @link https://github.com/jbouzekri/MaestroNavigationBundle
+ */
+
+/**
+ * @namespace
+ */
 namespace Maestro\Bundle\NavigationBundle\Menu;
 
 use Knp\Menu\FactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * Menu Builder
+ *
+ * Use it in services definition with the factory configuration
+ */
 class MenuBuilder
 {
     /**

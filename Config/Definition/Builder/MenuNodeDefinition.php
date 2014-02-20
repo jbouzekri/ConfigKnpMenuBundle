@@ -1,5 +1,16 @@
 <?php
 
+/**
+ * Copyright 2014 Jonathan Bouzekri. All rights reserved.
+ *
+ * @copyright Copyright 2014 Jonathan Bouzekri <jonathan.bouzekri@gmail.com>
+ * @license https://github.com/jbouzekri/MaestroNavigationBundle/blob/master/LICENSE
+ * @link https://github.com/jbouzekri/MaestroNavigationBundle
+ */
+
+/**
+ * @namespace
+ */
 namespace Maestro\Bundle\NavigationBundle\Config\Definition\Builder;
 
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
@@ -12,7 +23,8 @@ class MenuNodeDefinition extends ArrayNodeDefinition
     /**
      * Make menu hierarchy
      *
-     * @param  int                $depth
+     * @param  int $depth
+     *
      * @return MenuNodeDefinition
      */
     public function menuNodeHierarchy($depth = 10)

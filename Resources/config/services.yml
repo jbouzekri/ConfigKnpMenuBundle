@@ -1,22 +1,8 @@
 parameters:
-    maestro.menu.configuration_loader.class: Maestro\Bundle\NavigationBundle\Menu\ConfigurationLoader
+    maestro.menu.builder.class: Maestro\Bundle\NavigationBundle\Menu\MenuBuilder
 
 services:
-    maestro.menu.configuration_loader:
-        class: %maestro.menu.configuration_loader.class%
-    
     maestro.menu.builder:
-        class: Maestro\Bundle\NavigationBundle\Menu\MenuBuilder
+        class: %maestro.menu.builder.class%
         arguments: 
             - "@knp_menu.factory"
-
-    maestro.menu.admin:
-        class: Knp\Menu\MenuItem
-        factory_service: maestro.menu.builder
-        factory_method: createMenu
-        arguments: 
-          - "@request"
-          - "maestro_admin_menu"
-        scope: request
-        tags:
-            - { name: knp_menu.menu, alias: admin }
