@@ -26,7 +26,16 @@ Add the repository to the composer.json file of your project and run the update 
 }
 ```
 
-**WARNING :** The KnpMenuBundle is currently in unstable state so you must set the minimum-stability to dev.
+Then enable it in your AppKernel.php with the KnpMenuBundle :
+``` php
+$bundles = array(
+    ...
+    new Knp\Bundle\MenuBundle\KnpMenuBundle(),
+    new Maestro\Bundle\NavigationBundle\MaestroNavigationBundle(),
+);
+```
+
+**WARNING :** The KnpMenuBundle (which is a dependency) is currently in unstable state so you must set the minimum-stability to dev.
 
 Documentation
 -------------
