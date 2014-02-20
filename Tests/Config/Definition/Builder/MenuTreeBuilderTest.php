@@ -28,35 +28,52 @@
 /**
  * @namespace
  */
-namespace Maestro\Bundle\NavigationBundle\Config\Definition\Builder;
+namespace Maestro\Bundle\NavigationBundle\Tests\Config\Definition\Builder;
 
-use Symfony\Component\Config\Definition\Builder\NodeBuilder;
+use Maestro\Bundle\NavigationBundle\Config\Definition\Builder\MenuTreeBuilder;
 
 /**
- * MenuTreeBuilder
- *
- * Register the new MenuNodeDefinition
+ * Tests for Maestro\Bundle\NavigationBundle\Config\Definition\Builder\MenuTreeBuilder
  */
-class MenuTreeBuilder extends NodeBuilder
+class MenuTreeBuilderTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * Constructor
+     * @var \Maestro\Bundle\NavigationBundle\Config\Definition\Builder\MenuTreeBuilder
      */
-    public function __construct()
-    {
-        parent::__construct();
+    protected $builder;
 
-        $this->nodeMapping['menu'] = __NAMESPACE__ . '\\MenuNodeDefinition';
+    /**
+     * Init builder
+     */
+    protected function setUp()
+    {
+        $this->builder = new MenuTreeBuilder();
     }
 
     /**
-     * Creates a child menu node
-     *
-     * @param  string $name The name of the node
-     * @return MenuNodeDefinition The child node
+     * Test constructor
+     * Verify if the menu node has been registered
      */
-    public function menuNode($name)
+    public function testConstructor()
     {
-        return $this->node($name, 'menu');
+        $nodeMapping = $this->readAttribute($this->builder, 'nodeMapping');
+        $this->assertArrayHasKey('menu', $nodeMapping);
+        $this->assertEquals(
+            'Maestro\Bundle\NavigationBundle\Config\Definition\Builder\MenuNodeDefinition',
+            $nodeMapping['menu']
+        );
+    }
+
+    /**
+     * Test if builder return a menu node
+     */
+    public function testMenuNode()
+    {
+        $nodeDefinition = $this->builder->menuNode('test');
+        $this->assertInstanceOf(
+            'Maestro\Bundle\NavigationBundle\Config\Definition\Builder\MenuNodeDefinition',
+            $nodeDefinition
+        );
+        $this->assertEquals('test', $nodeDefinition->getNode()->getName());
     }
 }

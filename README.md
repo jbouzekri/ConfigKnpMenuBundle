@@ -11,6 +11,8 @@ For more information on knp menu, read :
 * The [Knp Menu Documentation](https://github.com/KnpLabs/KnpMenu/blob/master/README.markdown)
 * The [Knp Menu Bundle Documentation](https://github.com/KnpLabs/KnpMenuBundle/blob/master/README.md)
 
+This bundle was inspired by the [OroNavigationBundle](https://github.com/orocrm/platform/tree/master/src/Oro/Bundle/NavigationBundle) in oro crm.
+
 Installation
 ------------
 
