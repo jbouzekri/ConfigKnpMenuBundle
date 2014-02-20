@@ -23,7 +23,7 @@ Add the repository to the composer.json file of your project and run the update 
 ``` json
 {
     "require": {
-        "awsome/paa": "0.1.*"
+        "maestro/navigation-bundle": "dev-master"
     }
 }
 ```
