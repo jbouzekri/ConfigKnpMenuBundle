@@ -15,6 +15,8 @@ namespace Maestro\Bundle\NavigationBundle\Menu;
 
 use Knp\Menu\FactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Maestro\Bundle\NavigationBundle\Event\ConfigureMenuEvent;
 
 /**
  * Menu Builder
@@ -31,6 +33,13 @@ class MenuBuilder
     private $factory;
 
     /**
+     * the event dispatcher
+     *
+     * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface
+     */
+    private $dispatcher;
+
+    /**
      * An array of menu configuration
      *
      * @var array
@@ -41,11 +50,16 @@ class MenuBuilder
      * Constructor
      *
      * @param \Knp\Menu\FactoryInterface $factory the knp menu factory
+     * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $dispatcher the event dispatcher
      * @param array $configuration An array of menu configuration
      */
-    public function __construct(FactoryInterface $factory, $configuration = array())
-    {
+    public function __construct(
+        FactoryInterface $factory,
+        EventDispatcherInterface $dispatcher,
+        $configuration = array()
+    ) {
         $this->factory = $factory;
+        $this->dispatcher = $dispatcher;
         $this->configuration = $configuration;
     }
 
@@ -86,6 +100,8 @@ class MenuBuilder
         foreach ($this->configuration[$type]['tree'] as $name => $childConfiguration) {
             $this->createItem($menu, $name, $childConfiguration);
         }
+
+        $this->dispatcher->dispatch(ConfigureMenuEvent::CONFIGURE, new ConfigureMenuEvent($this->factory, $menu));
 
         return $menu;
     }
