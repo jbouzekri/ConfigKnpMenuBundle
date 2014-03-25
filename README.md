@@ -23,7 +23,7 @@ Add the repository to the composer.json file of your project and run the update 
 ``` json
 {
     "require": {
-        "maestro/navigation-bundle": "dev-master"
+        "maestro/navigation-bundle": "@dev"
     }
 }
 ```
