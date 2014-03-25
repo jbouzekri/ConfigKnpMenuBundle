@@ -6,3 +6,4 @@ services:
         class: %maestro.menu.builder.class%
         arguments: 
             - "@knp_menu.factory"
+            - "@event_dispatcher"
