@@ -91,7 +91,7 @@ class MenuBuilder
         }
 
         // Create menu root item
-        $menu = $this->factory->createItem('root');
+        $menu = $this->factory->createItem($type);
 
         // Sort first level of items
         $this->sortItems($this->configuration[$type]['tree']);
