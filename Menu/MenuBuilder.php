@@ -142,6 +142,11 @@ class MenuBuilder
             $item->setAttributes($configuration['attributes']);
         }
 
+        // set linkAttributes
+        if (!empty($configuration['linkAttributes'])) {
+            $item->setLinkAttributes($configuration['linkAttributes']);
+        }
+
         // set display
         if (isset($configuration['display'])) {
             $item->setDisplay($configuration['display']);
