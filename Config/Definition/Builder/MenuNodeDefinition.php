@@ -54,6 +54,10 @@ class MenuNodeDefinition extends ArrayNodeDefinition
                         ->prototype('variable')
                         ->end()
                     ->end()
+                    ->arrayNode('childrenAttributes')
+                        ->prototype('variable')
+                        ->end()
+                    ->end()
                     ->menuNode('children')->menuNodeHierarchy($depth - 1)
                 ->end()
             ->end();

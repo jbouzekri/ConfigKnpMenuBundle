@@ -61,7 +61,7 @@ maestro.menu.admin:
     class: Knp\Menu\MenuItem
     factory_service: maestro.menu.builder
     factory_method: createMenu
-    arguments: 
+    arguments:
       - "@request"
       - "my_mega_menu"
     scope: request
@@ -91,6 +91,8 @@ my_mega_menu:
             label: "My first label"
             order: An integer to sort the item in his level.
             attributes: An array of attributes passed to the knp item
+            linkAttributes: An array of attributes passed to the a tag
+            childrenAttributes: An array of attributes passed to the chidlren block
             display: boolean to hide the item
             displayChildren: boolean to hide the children
             children: # An array of subitems
