@@ -36,8 +36,6 @@ $bundles = array(
 );
 ```
 
-**WARNING :** The KnpMenuBundle (which is a dependency) is currently in unstable state so you must set the minimum-stability to dev.
-
 Documentation
 -------------
 
