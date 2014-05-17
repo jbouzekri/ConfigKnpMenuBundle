@@ -28,7 +28,7 @@
 /**
  * @namespace
  */
-namespace Maestro\Bundle\NavigationBundle\Config\Definition\Builder;
+namespace Jb\Bundle\ConfigKnpMenuBundle\Config\Definition\Builder;
 
 use Symfony\Component\Config\Definition\Builder\NodeBuilder;
 

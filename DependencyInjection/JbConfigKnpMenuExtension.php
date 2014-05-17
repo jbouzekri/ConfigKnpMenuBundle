@@ -4,14 +4,14 @@
  * Copyright 2014 Jonathan Bouzekri. All rights reserved.
  *
  * @copyright Copyright 2014 Jonathan Bouzekri <jonathan.bouzekri@gmail.com>
- * @license https://github.com/jbouzekri/MaestroNavigationBundle/blob/master/LICENSE
- * @link https://github.com/jbouzekri/MaestroNavigationBundle
+ * @license https://github.com/jbouzekri/ConfigKnpMenuBundle/blob/master/LICENSE
+ * @link https://github.com/jbouzekri/ConfigKnpMenuBundle
  */
 
 /**
  * @namespace
  */
-namespace Maestro\Bundle\NavigationBundle\DependencyInjection;
+namespace Jb\Bundle\ConfigKnpMenuBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
@@ -24,7 +24,7 @@ use Symfony\Component\Config\FileLocator;
  *
  * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html}
  */
-class MaestroNavigationExtension extends Extension
+class JbConfigKnpMenuExtension extends Extension
 {
     /**
      * {@inheritDoc}
@@ -56,7 +56,7 @@ class MaestroNavigationExtension extends Extension
 
         // Last argument of this service is always the menu configuration
         $container
-            ->getDefinition('maestro.menu.builder')
+            ->getDefinition('jb_config.menu.builder')
             ->addArgument($configuredMenus);
 
     }

@@ -28,17 +28,17 @@
 /**
  * @namespace
  */
-namespace Maestro\Bundle\NavigationBundle\Tests\Config\Definition\Builder;
+namespace Jb\Bundle\ConfigKnpMenuBundle\Tests\Config\Definition\Builder;
 
-use Maestro\Bundle\NavigationBundle\Config\Definition\Builder\MenuTreeBuilder;
+use Jb\Bundle\ConfigKnpMenuBundle\Config\Definition\Builder\MenuTreeBuilder;
 
 /**
- * Tests for Maestro\Bundle\NavigationBundle\Config\Definition\Builder\MenuTreeBuilder
+ * Tests for Jb\Bundle\ConfigKnpMenuBundle\Config\Definition\Builder\MenuTreeBuilder
  */
 class MenuTreeBuilderTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var \Maestro\Bundle\NavigationBundle\Config\Definition\Builder\MenuTreeBuilder
+     * @var \Jb\Bundle\ConfigKnpMenuBundle\Config\Definition\Builder\MenuTreeBuilder
      */
     protected $builder;
 
@@ -59,7 +59,7 @@ class MenuTreeBuilderTest extends \PHPUnit_Framework_TestCase
         $nodeMapping = $this->readAttribute($this->builder, 'nodeMapping');
         $this->assertArrayHasKey('menu', $nodeMapping);
         $this->assertEquals(
-            'Maestro\Bundle\NavigationBundle\Config\Definition\Builder\MenuNodeDefinition',
+            'Jb\Bundle\ConfigKnpMenuBundle\Config\Definition\Builder\MenuNodeDefinition',
             $nodeMapping['menu']
         );
     }
@@ -71,7 +71,7 @@ class MenuTreeBuilderTest extends \PHPUnit_Framework_TestCase
     {
         $nodeDefinition = $this->builder->menuNode('test');
         $this->assertInstanceOf(
-            'Maestro\Bundle\NavigationBundle\Config\Definition\Builder\MenuNodeDefinition',
+            'Jb\Bundle\ConfigKnpMenuBundle\Config\Definition\Builder\MenuNodeDefinition',
             $nodeDefinition
         );
         $this->assertEquals('test', $nodeDefinition->getNode()->getName());

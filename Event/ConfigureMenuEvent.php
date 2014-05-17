@@ -4,14 +4,14 @@
  * Copyright 2014 Jonathan Bouzekri. All rights reserved.
  *
  * @copyright Copyright 2014 Jonathan Bouzekri <jonathan.bouzekri@gmail.com>
- * @license https://github.com/jbouzekri/MaestroNavigationBundle/blob/master/LICENSE
- * @link https://github.com/jbouzekri/MaestroNavigationBundle
+ * @license https://github.com/jbouzekri/ConfigKnpMenuBundle/blob/master/LICENSE
+ * @link https://github.com/jbouzekri/ConfigKnpMenuBundle
  */
 
 /**
  * @namespace
  */
-namespace Maestro\Bundle\NavigationBundle\Event;
+namespace Jb\Bundle\ConfigKnpMenuBundle\Event;
 
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
@@ -24,7 +24,7 @@ use Symfony\Component\EventDispatcher\Event;
  */
 class ConfigureMenuEvent extends Event
 {
-    const CONFIGURE = 'maestro.navigation.menu_configure';
+    const CONFIGURE = 'jb_config.navigation.menu_configure';
 
     /**
      * @var \Knp\Menu\FactoryInterface

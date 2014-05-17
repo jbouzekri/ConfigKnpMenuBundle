@@ -4,14 +4,14 @@
  * Copyright 2014 Jonathan Bouzekri. All rights reserved.
  *
  * @copyright Copyright 2014 Jonathan Bouzekri <jonathan.bouzekri@gmail.com>
- * @license https://github.com/jbouzekri/MaestroNavigationBundle/blob/master/LICENSE
- * @link https://github.com/jbouzekri/MaestroNavigationBundle
+ * @license https://github.com/jbouzekri/ConfigKnpMenuBundle/blob/master/LICENSE
+ * @link https://github.com/jbouzekri/ConfigKnpMenuBundle
  */
 
 /**
  * @namespace
  */
-namespace Maestro\Bundle\NavigationBundle;
+namespace Jb\Bundle\ConfigKnpMenuBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
@@ -20,6 +20,6 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  *
  * @author jobou
  */
-class MaestroNavigationBundle extends Bundle
+class JbConfigKnpMenuBundle extends Bundle
 {
 }

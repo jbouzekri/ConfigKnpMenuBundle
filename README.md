@@ -1,11 +1,10 @@
-MaestroNavigationBundle
-=======================
+ConfigKnpMenuBundle
+===================
 
 Introduction
 ------------
 
-This bundle provides a way to configure your knp menus in your bundle yml configuration.
-It is used in the maestro platform but can be used as standalone.
+This bundle provides a way to configure your knp menus in your bundles yml configuration.
 
 For more information on knp menu, read :
 * The [Knp Menu Documentation](https://github.com/KnpLabs/KnpMenu/blob/master/README.markdown)
@@ -23,7 +22,7 @@ Add the repository to the composer.json file of your project and run the update 
 ``` json
 {
     "require": {
-        "maestro/navigation-bundle": "@dev"
+        "jbouzekri/config-knp-menu-bundle": "@dev"
     }
 }
 ```
@@ -33,7 +32,7 @@ Then enable it in your AppKernel.php with the KnpMenuBundle :
 $bundles = array(
     ...
     new Knp\Bundle\MenuBundle\KnpMenuBundle(),
-    new Maestro\Bundle\NavigationBundle\MaestroNavigationBundle(),
+    new Jb\Bundle\ConfigKnpMenuBundle\JbConfigKnpMenuBundle(),
 );
 ```
 
@@ -57,9 +56,9 @@ my_mega_menu:
 
 Then you need to define a service.
 ``` yml
-maestro.menu.admin:
+my_project.menu.admin:
     class: Knp\Menu\MenuItem
-    factory_service: maestro.menu.builder
+    factory_service: jb_config.menu.builder
     factory_method: createMenu
     arguments:
       - "@request"

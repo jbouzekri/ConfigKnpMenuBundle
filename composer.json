@@ -1,16 +1,16 @@
 {
-    "name": "maestro/navigation-bundle",
+    "name": "jbouzekri/config-knp-menu-bundle",
     "type": "symfony-bundle",
-    "description": "Maestro Menu Navigation Bundle",
-    "keywords": ["Maestro", "UI", "User Interface", "Menu", "Navigation", "Symfony"],
-    "homepage": "https://github.com/maestro-platform/MaestroNavigationBundle",
+    "description": "Configure your knp menus with yaml files accross your project bundles",
+    "keywords": ["Knp", "UI", "User Interface", "Menu", "Navigation", "Symfony"],
+    "homepage": "https://github.com/jbouzekri/ConfigKnpMenuBundle",
     "license": "MIT",
     "require": {
         "knplabs/knp-menu-bundle": "1.1.2",
         "symfony/event-dispatcher": "~2.1"
     },
     "autoload": {
-        "psr-0": { "Maestro\\Bundle\\NavigationBundle": "" }
+        "psr-0": { "Jb\\Bundle\\ConfigKnpMenuBundle": "" }
     },
-    "target-dir": "Maestro/Bundle/NavigationBundle"
+    "target-dir": "Jb/Bundle/ConfigKnpMenuBundle"
 }

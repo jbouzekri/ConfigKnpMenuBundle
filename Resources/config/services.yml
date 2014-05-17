@@ -1,9 +1,9 @@
 parameters:
-    maestro.menu.builder.class: Maestro\Bundle\NavigationBundle\Menu\MenuBuilder
+    jb_config.menu.builder.class: Jb\Bundle\ConfigKnpMenuBundle\Menu\MenuBuilder
 
 services:
-    maestro.menu.builder:
-        class: %maestro.menu.builder.class%
-        arguments: 
+    jb_config.menu.builder:
+        class: %jb_config.menu.builder.class%
+        arguments:
             - "@knp_menu.factory"
             - "@event_dispatcher"

@@ -28,12 +28,12 @@
 /**
  * @namespace
  */
-namespace Maestro\Bundle\NavigationBundle\Tests\Unit\Config\Definition\Builder;
+namespace Jb\Bundle\ConfigKnpMenuBundle\Tests\Unit\Config\Definition\Builder;
 
-use Maestro\Bundle\NavigationBundle\Config\Definition\Builder\MenuNodeDefinition;
+use Jb\Bundle\ConfigKnpMenuBundle\Config\Definition\Builder\MenuNodeDefinition;
 
 /**
- * Tests for Maestro\Bundle\NavigationBundle\Config\Definition\Builder\MenuNodeDefinition
+ * Tests for Jb\Bundle\ConfigKnpMenuBundle\Config\Definition\Builder\MenuNodeDefinition
  */
 class MenuNodeDefinitionTest extends \PHPUnit_Framework_TestCase
 {
@@ -52,7 +52,7 @@ class MenuNodeDefinitionTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->builder = $this->getMockBuilder('Maestro\Bundle\NavigationBundle\Config\Definition\Builder\MenuTreeBuilder')
+        $this->builder = $this->getMockBuilder('Jb\Bundle\ConfigKnpMenuBundle\Config\Definition\Builder\MenuTreeBuilder')
             ->setMethods(
                 array('node', 'children', 'scalarNode', 'end', 'menuNode', 'menuNodeHierarchy', 'defaultTrue', 'prototype')
             )
@@ -70,7 +70,7 @@ class MenuNodeDefinitionTest extends \PHPUnit_Framework_TestCase
             ->method('node');
 
         $this->assertInstanceOf(
-            'Maestro\Bundle\NavigationBundle\Config\Definition\Builder\MenuNodeDefinition',
+            'Jb\Bundle\ConfigKnpMenuBundle\Config\Definition\Builder\MenuNodeDefinition',
             $this->definition->menuNodeHierarchy(0)
         );
     }

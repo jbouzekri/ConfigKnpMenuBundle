@@ -4,18 +4,18 @@
  * Copyright 2014 Jonathan Bouzekri. All rights reserved.
  *
  * @copyright Copyright 2014 Jonathan Bouzekri <jonathan.bouzekri@gmail.com>
- * @license https://github.com/jbouzekri/MaestroNavigationBundle/blob/master/LICENSE
- * @link https://github.com/jbouzekri/MaestroNavigationBundle
+ * @license https://github.com/jbouzekri/ConfigKnpMenuBundle/blob/master/LICENSE
+ * @link https://github.com/jbouzekri/ConfigKnpMenuBundle
  */
 
 /**
  * @namespace
  */
-namespace Maestro\Bundle\NavigationBundle\DependencyInjection;
+namespace Jb\Bundle\ConfigKnpMenuBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
-use Maestro\Bundle\NavigationBundle\Config\Definition\Builder\MenuTreeBuilder;
+use Jb\Bundle\ConfigKnpMenuBundle\Config\Definition\Builder\MenuTreeBuilder;
 
 /**
  * Configuration for the navigation
