@@ -2,7 +2,7 @@ main:
     tree:
         first_item:
             label: First Item Label
-            route: "first_item_route"
+            uri: "/first-item"
             order: 10
         second_item:
             children:
@@ -10,3 +10,23 @@ main:
                     label: First Child
                     route: "first_item_route"
                     order: 10
+        third_item:
+            route: "my_route"
+            routeParameters:
+                test: test1
+            label: "Third Item Label"
+            order: 30
+            attributes:
+                test: test2
+            linkAttributes:
+                test: test3
+            childrenAttributes:
+                test: test4
+            display: false
+            displayChildren: false
+        four_item:
+            label: "Four Item Label"
+            order: 40
+        five_item:
+            label: "Five Item Label"
+            order: 40

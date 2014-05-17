@@ -18,15 +18,20 @@ class JbConfigKnpMenuExtensionTest extends \PHPUnit_Framework_TestCase
      */
     public function testLoading()
     {
-        $containerBuilder = $this->createContainer();
-        $this->extension = new JbConfigKnpMenuExtension();
-        $this->extension->load(array(), $containerBuilder);
-
-        $menuConfiguration = $containerBuilder->getParameter('jb_config.menu.configuration');
+        $menuConfiguration = self::loadConfiguration();
 
         $this->assertEquals($menuConfiguration['main']['tree']['second_item']['label'], 'Second Item Label');
         $this->assertEquals($menuConfiguration['main']['tree']['first_item']['label'], 'First Item Label');
         $this->assertEquals(count($menuConfiguration['main']['tree']['second_item']['children']), 1);
+    }
+
+    public static function loadConfiguration()
+    {
+        $containerBuilder = self::createContainer();
+        $extension = new JbConfigKnpMenuExtension();
+        $extension->load(array(), $containerBuilder);
+
+        return $containerBuilder->getParameter('jb_config.menu.configuration');
     }
 
     /**
@@ -36,7 +41,7 @@ class JbConfigKnpMenuExtensionTest extends \PHPUnit_Framework_TestCase
      *
      * @return \Symfony\Component\DependencyInjection\ContainerBuilder
      */
-    protected function createContainer($data = array())
+    protected static function createContainer($data = array())
     {
         $container = new ContainerBuilder(new ParameterBag(array_merge(array(
             'kernel.bundles'     => array(
