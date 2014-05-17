@@ -24,7 +24,7 @@ Add the repository to the composer.json file of your project and run the update 
 ``` json
 {
     "require": {
-        "jbouzekri/config-knp-menu-bundle": "0.9.0"
+        "jbouzekri/config-knp-menu-bundle": "1.0.0"
     }
 }
 ```
