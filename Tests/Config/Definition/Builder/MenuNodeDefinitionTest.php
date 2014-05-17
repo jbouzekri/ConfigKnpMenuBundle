@@ -52,9 +52,19 @@ class MenuNodeDefinitionTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->builder = $this->getMockBuilder('Jb\Bundle\ConfigKnpMenuBundle\Config\Definition\Builder\MenuTreeBuilder')
+        $this->builder = $this
+            ->getMockBuilder('Jb\Bundle\ConfigKnpMenuBundle\Config\Definition\Builder\MenuTreeBuilder')
             ->setMethods(
-                array('node', 'children', 'scalarNode', 'end', 'menuNode', 'menuNodeHierarchy', 'defaultTrue', 'prototype')
+                array(
+                    'node',
+                    'children',
+                    'scalarNode',
+                    'end',
+                    'menuNode',
+                    'menuNodeHierarchy',
+                    'defaultTrue',
+                    'prototype'
+                )
             )
             ->getMock();
         $this->definition = new MenuNodeDefinition('test');

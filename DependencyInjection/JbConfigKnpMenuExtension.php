@@ -51,7 +51,10 @@ class JbConfigKnpMenuExtension extends Extension
         foreach ($configuredMenus as $rootName => $menuConfiguration) {
             $configuration = new NavigationConfiguration();
             $configuration->setMenuRootName($rootName);
-            $menuConfiguration[$rootName] = $this->processConfiguration($configuration, array($rootName => $menuConfiguration));
+            $menuConfiguration[$rootName] = $this->processConfiguration(
+                $configuration,
+                array($rootName => $menuConfiguration)
+            );
         }
 
         // Last argument of this service is always the menu configuration
