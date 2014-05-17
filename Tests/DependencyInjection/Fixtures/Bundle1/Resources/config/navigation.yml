@@ -1,0 +1,6 @@
+main:
+    tree:
+        second_item:
+            label: Second Item Label
+            route: "second_item_route"
+            order: 20

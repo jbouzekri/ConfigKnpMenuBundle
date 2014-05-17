@@ -1,0 +1,12 @@
+main:
+    tree:
+        first_item:
+            label: First Item Label
+            route: "first_item_route"
+            order: 10
+        second_item:
+            children:
+                second_item_first_child:
+                    label: First Child
+                    route: "first_item_route"
+                    order: 10
