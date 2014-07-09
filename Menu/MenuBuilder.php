@@ -92,7 +92,7 @@ class MenuBuilder
 
         // Create menu root item
         $menu = $this->factory->createItem($type);
-        $menu->setCurrentUri($request->getUri());
+        $menu->setCurrentUri($request->getRequestUri());
 
         // Sort first level of items
         $this->sortItems($this->configuration[$type]['tree']);
