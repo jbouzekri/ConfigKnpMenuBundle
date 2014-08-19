@@ -14,7 +14,6 @@
 namespace Jb\Bundle\ConfigKnpMenuBundle\Menu;
 
 use Knp\Menu\FactoryInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Jb\Bundle\ConfigKnpMenuBundle\Event\ConfigureMenuEvent;
 
@@ -76,14 +75,13 @@ class MenuBuilder
     /**
      * Create a menu from the configuration loaded
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request the symfony request
      * @param string $type the type of menu to load. It must match a key in the first level of configuration array
      *
      * @return \Knp\Menu\ItemInterface
      *
      * @throws \Jb\Bundle\ConfigKnpMenuBundle\Menu\Exception\MenuConfigurationNotFoundException
      */
-    public function createMenu(Request $request, $type)
+    public function createMenu($type)
     {
         // Check if the menu type asked by the service has a configuration
         if (empty($this->configuration[$type])) {
@@ -92,7 +90,6 @@ class MenuBuilder
 
         // Create menu root item
         $menu = $this->factory->createItem($type);
-        $menu->setCurrentUri($request->getUri());
 
         // Sort first level of items
         $this->sortItems($this->configuration[$type]['tree']);

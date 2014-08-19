@@ -61,7 +61,6 @@ my_project.menu.admin:
     factory_service: jb_config.menu.builder
     factory_method: createMenu
     arguments:
-      - "@request"
       - "my_mega_menu"
     scope: request
     tags:

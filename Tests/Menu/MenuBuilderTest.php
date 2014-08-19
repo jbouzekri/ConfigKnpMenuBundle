@@ -6,9 +6,8 @@
 namespace Jb\Bundle\ConfigKnpMenuBundle\Tests\Menu;
 
 use Jb\Bundle\PhumborBundle\Tests\DependencyInjection\JbConfigKnpMenuExtensionTest;
-use Knp\Menu\Silex\RouterAwareFactory;
+use Knp\Menu\MenuFactory;
 use Jb\Bundle\ConfigKnpMenuBundle\Menu\MenuBuilder;
-use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Tests for Jb\Bundle\ConfigKnpMenuBundle\Menu\MenuBuilder
@@ -25,12 +24,15 @@ class MenuBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $urlGenerator = $this->getMock('Symfony\\Component\\Routing\\Generator\\UrlGeneratorInterface');
-        $urlGenerator->expects($this->any())
-            ->method('generate')
-            ->will($this->returnValue('/my-page'));
+        $routingExtension = $this->getMockBuilder('Knp\\Menu\\Integration\\Symfony\\RoutingExtension')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $routingExtension->expects($this->any())
+            ->method('buildOptions')
+            ->will($this->returnValue(array('uri' => '/my-page')));
 
-        $menuFactory = new RouterAwareFactory($urlGenerator);
+        $menuFactory = new MenuFactory();
+        $menuFactory->addExtension($routingExtension);
 
         $eventDispatcher = $this->getMock('Symfony\\Component\\EventDispatcher\\EventDispatcherInterface');
         $configuration = JbConfigKnpMenuExtensionTest::loadConfiguration();
@@ -44,7 +46,7 @@ class MenuBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreateMenu()
     {
-        $menu = $this->menuBuilder->createMenu(new Request(), 'main');
+        $menu = $this->menuBuilder->createMenu('main');
 
         $this->assertEquals(
             count($menu->getChildren()),
@@ -63,6 +65,7 @@ class MenuBuilderTest extends \PHPUnit_Framework_TestCase
             '/my-page',
             'Third item uri'
         );
+
         $this->assertEquals(
             $menu->getChild('third_item')->getLabel(),
             'Third Item Label',
@@ -130,7 +133,7 @@ class MenuBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function testMultipleMenus()
     {
-        $menu = $this->menuBuilder->createMenu(new Request(), 'second_menu');
+        $menu = $this->menuBuilder->createMenu('second_menu');
 
         $this->assertEquals(
             $menu->getChild('item1')->getLabel(),
@@ -149,6 +152,6 @@ class MenuBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function testUnknownMenuException()
     {
-        $menu = $this->menuBuilder->createMenu(new Request(), 'unknown');
+        $menu = $this->menuBuilder->createMenu('unknown');
     }
 }

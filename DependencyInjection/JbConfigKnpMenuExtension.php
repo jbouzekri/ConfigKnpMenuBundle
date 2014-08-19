@@ -32,15 +32,14 @@ class JbConfigKnpMenuExtension extends Extension
     public function load(array $configs, ContainerBuilder $container)
     {
         $configuredMenus = array();
+        if (is_file($file = dirname($container->getParameter('kernel.root_dir') . '/config/navigation.yml'))) {
+            $configuredMenus = $this->parseFile($file);
+        }
 
         foreach ($container->getParameter('kernel.bundles') as $bundle) {
             $reflection = new \ReflectionClass($bundle);
             if (is_file($file = dirname($reflection->getFilename()) . '/Resources/config/navigation.yml')) {
-                $bundleConfig = Yaml::parse(realpath($file));
-
-                if (is_array($bundleConfig)) {
-                    $configuredMenus = array_replace_recursive($configuredMenus, $bundleConfig);
-                }
+                $configuredMenus = array_replace_recursive($configuredMenus, $this->parseFile($file));
             }
         }
 
@@ -65,5 +64,23 @@ class JbConfigKnpMenuExtension extends Extension
             ->getDefinition('jb_config.menu.builder')
             ->addArgument($configuredMenus);
 
+    }
+
+    /**
+     * Parse a navigation.yml file
+     *
+     * @param string $file
+     *
+     * @return array
+     */
+    public function parseFile($file)
+    {
+        $bundleConfig = Yaml::parse(realpath($file));
+
+        if (!is_array($bundleConfig)) {
+            return array();
+        }
+
+        return $bundleConfig;
     }
 }
