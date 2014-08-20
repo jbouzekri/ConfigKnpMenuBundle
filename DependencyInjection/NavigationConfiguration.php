@@ -51,6 +51,10 @@ class NavigationConfiguration implements ConfigurationInterface
         // Tree node level added in order to keep the array keys for the first level of nodes
         $rootNode
             ->children()
+                ->arrayNode('childrenAttributes')
+                    ->prototype('variable')
+                    ->end()
+                ->end()
                 ->menuNode('tree')
                     ->menuNodeHierarchy()
                 ->end()

@@ -18,6 +18,7 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\Config\Resource\FileResource;
 
 /**
  * This is the class that loads and manages your bundle configuration
@@ -32,14 +33,16 @@ class JbConfigKnpMenuExtension extends Extension
     public function load(array $configs, ContainerBuilder $container)
     {
         $configuredMenus = array();
-        if (is_file($file = dirname($container->getParameter('kernel.root_dir') . '/config/navigation.yml'))) {
+        if (is_file($file = $container->getParameter('kernel.root_dir') . '/config/navigation.yml')) {
             $configuredMenus = $this->parseFile($file);
+            $container->addResource(new FileResource($file));
         }
 
         foreach ($container->getParameter('kernel.bundles') as $bundle) {
             $reflection = new \ReflectionClass($bundle);
             if (is_file($file = dirname($reflection->getFilename()) . '/Resources/config/navigation.yml')) {
                 $configuredMenus = array_replace_recursive($configuredMenus, $this->parseFile($file));
+                $container->addResource(new FileResource($file));
             }
         }
 
