@@ -78,7 +78,7 @@ class NavigationConfigurationTest extends \PHPUnit_Framework_TestCase
     public function testTransformationConfiguration()
     {
 
-        $data = array('tree' => array('item1' => self::buildRandomMenuItem()));
+        $data = array('childrenAttributes' => array(), 'tree' => array('item1' => self::buildRandomMenuItem()));
         $data['tree']['item1']['children']['item1.1'] = self::buildRandomMenuItem();
 
         $processor = new Processor();
@@ -126,6 +126,6 @@ class NavigationConfigurationTest extends \PHPUnit_Framework_TestCase
      */
     protected static function getBundleDefaultConfig()
     {
-        return array('tree' => array());
+        return array('childrenAttributes' => array(), 'tree' => array());
     }
 }

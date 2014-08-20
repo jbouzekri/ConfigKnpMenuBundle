@@ -179,12 +179,15 @@ class MenuBuilder
      */
     protected function sortItems(&$items)
     {
-        uasort($items, function ($item1, $item2) {
-            if (empty($item1['order']) || empty($item2['order']) || $item1['order'] == $item2['order']) {
-                return 0;
-            }
+        uasort(
+            $items,
+            function ($item1, $item2) {
+                if (empty($item1['order']) || empty($item2['order']) || $item1['order'] == $item2['order']) {
+                    return 0;
+                }
 
-            return ($item1['order'] < $item2['order']) ? -1 : 1;
-        });
+                return ($item1['order'] < $item2['order']) ? -1 : 1;
+            }
+        );
     }
 }
