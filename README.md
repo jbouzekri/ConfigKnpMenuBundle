@@ -24,7 +24,7 @@ Add the repository to the composer.json file of your project and run the update 
 ``` json
 {
     "require": {
-        "jbouzekri/config-knp-menu-bundle": "1.0.0"
+        "jbouzekri/config-knp-menu-bundle": "2.0.0"
     }
 }
 ```
@@ -81,6 +81,7 @@ This is the available configuration definition for an item.
 
 ``` yml
 my_mega_menu:
+    childrenAttributes: An array of attributes passed to the root ul tag
     tree:
         first_level_item:
             uri: "An uri. Use it if you do not define route parameter"
@@ -91,6 +92,7 @@ my_mega_menu:
             attributes: An array of attributes passed to the knp item
             linkAttributes: An array of attributes passed to the a tag
             childrenAttributes: An array of attributes passed to the chidlren block
+            labelAttributes: An array of attributes passed to the label tag
             display: boolean to hide the item
             displayChildren: boolean to hide the children
             children: # An array of subitems
