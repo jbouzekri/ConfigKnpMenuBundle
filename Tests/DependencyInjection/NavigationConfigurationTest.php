@@ -66,6 +66,9 @@ class NavigationConfigurationTest extends \PHPUnit_Framework_TestCase
             'childrenAttributes' => array(
                 'test' => 'test'.$number
             ),
+            'labelAttributes' => array(
+                'test' => 'test'.$number
+            ),
             'display' => true,
             'displayChildren' => true,
             'children' => array()
@@ -116,6 +119,7 @@ class NavigationConfigurationTest extends \PHPUnit_Framework_TestCase
             array( array('tree' => array('item1' => array('display' => array()))) ),
             array( array('tree' => array('item1' => array('displayChildren' => array()))) ),
             array( array('tree' => array('item1' => array('children' => ''))) ),
+            array( array('tree' => array('item1' => array('labelAttributes' => ''))) ),
         );
     }
 

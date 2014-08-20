@@ -184,15 +184,58 @@ class MenuBuilder
      */
     protected function sortItems(&$items)
     {
-        uasort(
-            $items,
-            function ($item1, $item2) {
-                if (empty($item1['order']) || empty($item2['order']) || $item1['order'] == $item2['order']) {
-                    return 0;
-                }
-
-                return ($item1['order'] < $item2['order']) ? -1 : 1;
+        $this->safeUaSortItems($items, function ($item1, $item2) {
+            if (empty($item1['order']) || empty($item2['order']) || $item1['order'] == $item2['order']) {
+                return 0;
             }
-        );
+
+            return ($item1['order'] < $item2['order']) ? -1 : 1;
+        });
+    }
+
+    /**
+     * Safe sort items
+     * (taken from http://php.net/manual/en/function.uasort.php#114535)
+     *
+     * @param array $array
+     * @param Closure $cmp_function
+     *
+     * @return null
+     */
+    protected function safeUaSortItems(&$array, $cmp_function) {
+        if(count($array) < 2) {
+            return;
+        }
+        $halfway = count($array) / 2;
+        $array1 = array_slice($array, 0, $halfway, TRUE);
+        $array2 = array_slice($array, $halfway, NULL, TRUE);
+
+        $this->safeUaSortItems($array1, $cmp_function);
+        $this->safeUaSortItems($array2, $cmp_function);
+        if(call_user_func($cmp_function, end($array1), reset($array2)) < 1) {
+            $array = $array1 + $array2;
+            return;
+        }
+        $array = array();
+        reset($array1);
+        reset($array2);
+        while(current($array1) && current($array2)) {
+            if(call_user_func($cmp_function, current($array1), current($array2)) < 1) {
+                $array[key($array1)] = current($array1);
+                next($array1);
+            } else {
+                $array[key($array2)] = current($array2);
+                next($array2);
+            }
+        }
+        while(current($array1)) {
+            $array[key($array1)] = current($array1);
+            next($array1);
+        }
+        while(current($array2)) {
+            $array[key($array2)] = current($array2);
+            next($array2);
+        }
+        return;
     }
 }
