@@ -153,6 +153,11 @@ class MenuBuilder
             $item->setChildrenAttributes($configuration['childrenAttributes']);
         }
 
+        // set labelAttributes
+        if (!empty($configuration['labelAttributes'])) {
+            $item->setLabelAttributes($configuration['labelAttributes']);
+        }
+
         // set display
         if (isset($configuration['display'])) {
             $item->setDisplay($configuration['display']);
