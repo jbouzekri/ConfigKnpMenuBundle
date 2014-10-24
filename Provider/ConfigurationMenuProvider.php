@@ -11,39 +11,41 @@
 /**
  * @namespace
  */
-namespace Jb\Bundle\ConfigKnpMenuBundle\Menu;
+namespace Jb\Bundle\ConfigKnpMenuBundle\Provider;
 
 use Knp\Menu\FactoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Jb\Bundle\ConfigKnpMenuBundle\Event\ConfigureMenuEvent;
+use Knp\Menu\Provider\MenuProviderInterface;
 
 /**
- * Menu Builder
+ * ConfigurationMenuProvider
+ * Provide menu from configuration
  *
- * Use it in services definition with the factory configuration
+ * @author jobou
  */
-class MenuBuilder
+class ConfigurationMenuProvider implements MenuProviderInterface
 {
     /**
      * the knp menu factory
      *
      * @var \Knp\Menu\FactoryInterface
      */
-    private $factory;
+    protected $factory;
 
     /**
      * the event dispatcher
      *
      * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface
      */
-    private $dispatcher;
+    protected $dispatcher;
 
     /**
      * An array of menu configuration
      *
      * @var array
      */
-    private $configuration;
+    protected $configuration;
 
     /**
      * Constructor
@@ -73,38 +75,35 @@ class MenuBuilder
     }
 
     /**
-     * Create a menu from the configuration loaded
-     *
-     * @param string $type the type of menu to load. It must match a key in the first level of configuration array
-     *
-     * @return \Knp\Menu\ItemInterface
-     *
-     * @throws \Jb\Bundle\ConfigKnpMenuBundle\Menu\Exception\MenuConfigurationNotFoundException
+     * {@inheritDoc}
      */
-    public function createMenu($type)
+    public function get($name, array $options = array())
     {
-        // Check if the menu type asked by the service has a configuration
-        if (empty($this->configuration[$type])) {
-            throw new Exception\MenuConfigurationNotFoundException($type." configuration not found");
-        }
-
         // Create menu root item
-        $menu = $this->factory->createItem($type);
-        if (!empty($this->configuration[$type]['childrenAttributes'])) {
-            $menu->setChildrenAttributes($this->configuration[$type]['childrenAttributes']);
+        $menu = $this->factory->createItem($name);
+        if (!empty($this->configuration[$name]['childrenAttributes'])) {
+            $menu->setChildrenAttributes($this->configuration[$name]['childrenAttributes']);
         }
 
         // Sort first level of items
-        $this->sortItems($this->configuration[$type]['tree']);
+        $this->sortItems($this->configuration[$name]['tree']);
 
         // Append item recursively to root
-        foreach ($this->configuration[$type]['tree'] as $name => $childConfiguration) {
-            $this->createItem($menu, $name, $childConfiguration);
+        foreach ($this->configuration[$name]['tree'] as $key => $childConfiguration) {
+            $this->createItem($menu, $key, $childConfiguration);
         }
 
         $this->dispatcher->dispatch(ConfigureMenuEvent::CONFIGURE, new ConfigureMenuEvent($this->factory, $menu));
 
         return $menu;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function has($name, array $options = array())
+    {
+        return !empty($this->configuration[$name]);
     }
 
     /**

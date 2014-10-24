@@ -1,9 +1,11 @@
 parameters:
-    jb_config.menu.builder.class: Jb\Bundle\ConfigKnpMenuBundle\Menu\MenuBuilder
+    jb_config.menu.provider.class: Jb\Bundle\ConfigKnpMenuBundle\Provider\ConfigurationMenuProvider
 
 services:
-    jb_config.menu.builder:
-        class: %jb_config.menu.builder.class%
+    jb_config.menu.provider:
+        class: %jb_config.menu.provider.class%
         arguments:
-            - "@knp_menu.factory"
+            - @knp_menu.factory
             - "@event_dispatcher"
+        tags:
+            - { name: knp_menu.provider }

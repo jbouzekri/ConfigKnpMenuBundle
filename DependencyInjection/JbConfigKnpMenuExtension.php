@@ -64,7 +64,7 @@ class JbConfigKnpMenuExtension extends Extension
 
         // Last argument of this service is always the menu configuration
         $container
-            ->getDefinition('jb_config.menu.builder')
+            ->getDefinition('jb_config.menu.provider')
             ->addArgument($configuredMenus);
 
     }

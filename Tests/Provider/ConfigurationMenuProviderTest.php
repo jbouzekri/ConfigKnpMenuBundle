@@ -3,21 +3,21 @@
 /**
  * @namespace
  */
-namespace Jb\Bundle\ConfigKnpMenuBundle\Tests\Menu;
+namespace Jb\Bundle\ConfigKnpMenuBundle\Tests\Provider;
 
 use Jb\Bundle\PhumborBundle\Tests\DependencyInjection\JbConfigKnpMenuExtensionTest;
 use Knp\Menu\MenuFactory;
-use Jb\Bundle\ConfigKnpMenuBundle\Menu\MenuBuilder;
+use Jb\Bundle\ConfigKnpMenuBundle\Provider\ConfigurationMenuProvider;
 
 /**
- * Tests for Jb\Bundle\ConfigKnpMenuBundle\Menu\MenuBuilder
+ * Tests for Jb\Bundle\ConfigKnpMenuBundle\Provider\ConfigurationMenuProvider
  */
-class MenuBuilderTest extends \PHPUnit_Framework_TestCase
+class ConfigurationMenuProviderTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var \Jb\Bundle\ConfigKnpMenuBundle\Menu\MenuBuilder
+     * @var \Jb\Bundle\ConfigKnpMenuBundle\Provider\ConfigurationMenuProvider
      */
-    protected $menuBuilder;
+    protected $configurationProvider;
 
     /**
      * Init Mock
@@ -37,16 +37,16 @@ class MenuBuilderTest extends \PHPUnit_Framework_TestCase
         $eventDispatcher = $this->getMock('Symfony\\Component\\EventDispatcher\\EventDispatcherInterface');
         $configuration = JbConfigKnpMenuExtensionTest::loadConfiguration();
 
-        $this->menuBuilder = new MenuBuilder($menuFactory, $eventDispatcher);
-        $this->menuBuilder->setConfiguration($configuration);
+        $this->configurationProvider = new ConfigurationMenuProvider($menuFactory, $eventDispatcher);
+        $this->configurationProvider->setConfiguration($configuration);
     }
 
     /**
-     * test createMenu
+     * test get
      */
-    public function testCreateMenu()
+    public function testGet()
     {
-        $menu = $this->menuBuilder->createMenu('main');
+        $menu = $this->configurationProvider->get('main');
 
         $this->assertEquals(
             count($menu->getChildren()),
@@ -129,11 +129,11 @@ class MenuBuilderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * test createMenu with multiple menu
+     * test get with multiple menu
      */
     public function testMultipleMenus()
     {
-        $menu = $this->menuBuilder->createMenu('second_menu');
+        $menu = $this->configurationProvider->get('second_menu');
 
         $this->assertEquals(
             $menu->getChild('item1')->getLabel(),
@@ -145,13 +145,5 @@ class MenuBuilderTest extends \PHPUnit_Framework_TestCase
             'Item 2 Label',
             'Second menu item 2 label'
         );
-    }
-
-    /**
-     * @expectedException \Jb\Bundle\ConfigKnpMenuBundle\Menu\Exception\MenuConfigurationNotFoundException
-     */
-    public function testUnknownMenuException()
-    {
-        $menu = $this->menuBuilder->createMenu('unknown');
     }
 }

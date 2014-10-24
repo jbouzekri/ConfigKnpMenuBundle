@@ -24,7 +24,7 @@ Add the repository to the composer.json file of your project and run the update 
 ``` json
 {
     "require": {
-        "jbouzekri/config-knp-menu-bundle": "2.0.0"
+        "jbouzekri/config-knp-menu-bundle": "3.0.0"
     }
 }
 ```
@@ -41,7 +41,7 @@ $bundles = array(
 Documentation
 -------------
 
-In order to use this bundle, you must define your menu configuration in a navigation.yml file in your bundle.
+In order to use this bundle, you must define your menu configuration in a **navigation.yml** file in your bundle.
 
 Example :
 ``` yml
@@ -67,8 +67,7 @@ my_project.menu.admin:
         - { name: knp_menu.menu, alias: my_menu }
 ```
 
-The second argument must match the name of the menu in navigation.yml.
-The tag alias will be used in your twig template.
+It will configure a provider for knp menu factory. You can then use your my_mega_menu in twig as a classic knp menu :
 
 ``` twig
 {{ knp_menu_render('my_menu') }}
@@ -108,4 +107,3 @@ Issues
 * tree sub configuration property :
 In the navigation.yml file, you must defined a tree key below your menu name. It provides another level to keep the first level item key after configuration parsing.
 If someone know how to remove it, let me know.
-
