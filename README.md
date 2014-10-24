@@ -57,7 +57,7 @@ my_mega_menu:
 It will configure a provider for knp menu factory. You can then use your my_mega_menu in twig as a classic knp menu :
 
 ``` twig
-{{ knp_menu_render('my_menu') }}
+{{ knp_menu_render('my_mega_menu') }}
 ```
 
 Configuration
