@@ -54,19 +54,6 @@ my_mega_menu:
                     label: My second level
 ```
 
-Then you need to define a service.
-``` yml
-my_project.menu.admin:
-    class: Knp\Menu\MenuItem
-    factory_service: jb_config.menu.builder
-    factory_method: createMenu
-    arguments:
-      - "my_mega_menu"
-    scope: request
-    tags:
-        - { name: knp_menu.menu, alias: my_menu }
-```
-
 It will configure a provider for knp menu factory. You can then use your my_mega_menu in twig as a classic knp menu :
 
 ``` twig
@@ -94,12 +81,22 @@ my_mega_menu:
             labelAttributes: An array of attributes passed to the label tag
             display: boolean to hide the item
             displayChildren: boolean to hide the children
+            roles: array of item (string roles) passed to isGranted securityContext method to check if user has rights in menu items
             children: # An array of subitems
                 second_level_item:
                     label: My second level
 ```
 
 This configuration matches the methods available in the Knp Menu Item class
+
+Menu security
+-------------
+
+Security context is injected in menu item provider.
+
+For root menu item, display or hide it in your twig template.
+For children items, if you didn't add the roles key, they will be displayed.
+Else it will passed the array of key to the isGranted method and check if you have rights on the the item.
 
 Issues
 ------

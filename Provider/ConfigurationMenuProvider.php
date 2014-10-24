@@ -17,6 +17,7 @@ use Knp\Menu\FactoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Jb\Bundle\ConfigKnpMenuBundle\Event\ConfigureMenuEvent;
 use Knp\Menu\Provider\MenuProviderInterface;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
  * ConfigurationMenuProvider
@@ -41,6 +42,13 @@ class ConfigurationMenuProvider implements MenuProviderInterface
     protected $dispatcher;
 
     /**
+     * Security Context
+     *
+     * @var \Symfony\Component\Security\Core\SecurityContextInterface
+     */
+    protected $securityContext;
+
+    /**
      * An array of menu configuration
      *
      * @var array
@@ -52,16 +60,29 @@ class ConfigurationMenuProvider implements MenuProviderInterface
      *
      * @param \Knp\Menu\FactoryInterface $factory the knp menu factory
      * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $dispatcher the event dispatcher
+     * @param \Symfony\Component\Security\Core\SecurityContextInterface $securityContext security is_granted check
      * @param array $configuration An array of menu configuration
      */
     public function __construct(
         FactoryInterface $factory,
         EventDispatcherInterface $dispatcher,
+        SecurityContextInterface $securityContext,
         $configuration = array()
     ) {
         $this->factory = $factory;
         $this->dispatcher = $dispatcher;
+        $this->securityContext = $securityContext;
         $this->configuration = $configuration;
+    }
+
+    /**
+     * Set security context
+     *
+     * @param \Symfony\Component\Security\Core\SecurityContextInterface $securityContext security
+     */
+    public function setSecurityContext(SecurityContextInterface $securityContext)
+    {
+        $this->securityContext = $securityContext;
     }
 
     /**
@@ -90,6 +111,10 @@ class ConfigurationMenuProvider implements MenuProviderInterface
 
         // Append item recursively to root
         foreach ($this->configuration[$name]['tree'] as $key => $childConfiguration) {
+            // If no rights granted. Do not display item.
+            if (!$this->isGranted($childConfiguration)) {
+                continue;
+            }
             $this->createItem($menu, $key, $childConfiguration);
         }
 
@@ -171,6 +196,10 @@ class ConfigurationMenuProvider implements MenuProviderInterface
         if (!empty($configuration['children'])) {
             $this->sortItems($configuration['children']);
             foreach ($configuration['children'] as $childName => $childConfiguration) {
+                // If no rights granted. Do not display item.
+                if (!$this->isGranted($childConfiguration)) {
+                    continue;
+                }
                 $this->createItem($item, $childName, $childConfiguration);
             }
         }
@@ -240,5 +269,40 @@ class ConfigurationMenuProvider implements MenuProviderInterface
             next($array2);
         }
         return;
+    }
+
+    /**
+     * Check if security context grant rights on menu item
+     *
+     * @param array $configuration
+     *
+     * @return boolean
+     */
+    protected function isGranted(array $configuration)
+    {
+        // If no role configuration. Grant rights.
+        if (!isset($configuration['roles'])) {
+            return true;
+        }
+
+        // If no configuration. Grant rights.
+        if (!is_array($configuration['roles'])) {
+            return true;
+        }
+
+        // No token. No rights.
+        if (!$this->securityContext->getToken()) {
+            return false;
+        }
+
+        // Check if one of the role is granted
+        foreach ($configuration['roles'] as $role) {
+            if ($this->securityContext->isGranted($role)) {
+                return true;
+            }
+        }
+
+        // Else return false
+        return false;
     }
 }

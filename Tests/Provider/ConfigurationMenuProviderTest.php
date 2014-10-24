@@ -31,13 +31,20 @@ class ConfigurationMenuProviderTest extends \PHPUnit_Framework_TestCase
             ->method('buildOptions')
             ->will($this->returnValue(array('uri' => '/my-page')));
 
+        $securityContext = $this->getMockBuilder('Symfony\\Component\\Security\\Core\\SecurityContextInterface')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $securityContext->expects($this->any())
+            ->method('isGranted')
+            ->will($this->returnValue(true));
+
         $menuFactory = new MenuFactory();
         $menuFactory->addExtension($routingExtension);
 
         $eventDispatcher = $this->getMock('Symfony\\Component\\EventDispatcher\\EventDispatcherInterface');
         $configuration = JbConfigKnpMenuExtensionTest::loadConfiguration();
 
-        $this->configurationProvider = new ConfigurationMenuProvider($menuFactory, $eventDispatcher);
+        $this->configurationProvider = new ConfigurationMenuProvider($menuFactory, $eventDispatcher, $securityContext);
         $this->configurationProvider->setConfiguration($configuration);
     }
 
@@ -144,6 +151,48 @@ class ConfigurationMenuProviderTest extends \PHPUnit_Framework_TestCase
             $menu->getChild('item2')->getLabel(),
             'Item 2 Label',
             'Second menu item 2 label'
+        );
+    }
+
+    /**
+     * test with roles
+     */
+    public function testWithRoles()
+    {
+        $configurationProviderBackup = clone $this->configurationProvider;
+
+        $securityContext = $this->getMockBuilder('Symfony\\Component\\Security\\Core\\SecurityContextInterface')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $securityContext->expects($this->any())
+            ->method('isGranted')
+            ->will($this->returnValue(false));
+
+        $this->configurationProvider->setSecurityContext($securityContext);
+        $menu = $this->configurationProvider->get('menu_roles');
+
+        $this->assertEquals(
+            $menu->getChild('item2'),
+            false,
+            'not menu because no rights'
+        );
+
+        $securityContext = $this->getMockBuilder('Symfony\\Component\\Security\\Core\\SecurityContextInterface')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $securityContext->expects($this->any())
+            ->method('isGranted')
+            ->will($this->returnValue(true));
+        $securityContext
+            ->method('getToken')
+            ->will($this->returnValue(true));
+        $this->configurationProvider->setSecurityContext($securityContext);
+        $menu = $this->configurationProvider->get('menu_roles');
+
+        $this->assertInstanceOf(
+            'Knp\Menu\ItemInterface',
+            $menu->getChild('item2'),
+            'authenticated and rights'
         );
     }
 }

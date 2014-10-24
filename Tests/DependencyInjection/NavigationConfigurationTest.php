@@ -71,7 +71,8 @@ class NavigationConfigurationTest extends \PHPUnit_Framework_TestCase
             ),
             'display' => true,
             'displayChildren' => true,
-            'children' => array()
+            'children' => array(),
+            'roles' => array()
         );
     }
 

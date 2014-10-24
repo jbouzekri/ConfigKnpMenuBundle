@@ -6,6 +6,7 @@ services:
         class: %jb_config.menu.provider.class%
         arguments:
             - @knp_menu.factory
-            - "@event_dispatcher"
+            - @event_dispatcher
+            - @security.context
         tags:
             - { name: knp_menu.provider }
