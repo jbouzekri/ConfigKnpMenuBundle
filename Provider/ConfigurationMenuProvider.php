@@ -209,7 +209,7 @@ class ConfigurationMenuProvider implements MenuProviderInterface
             }
 
             // If all children have no access remove parent
-            if ($notGrantedCounter == count($configuration['children'])); {
+            if ($notGrantedCounter == count($configuration['children'])) {
                 $parentItem->removeChild($name);
             }
         }
