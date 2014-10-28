@@ -195,12 +195,22 @@ class ConfigurationMenuProvider implements MenuProviderInterface
         // Recursive loop for appending children menu items
         if (!empty($configuration['children'])) {
             $this->sortItems($configuration['children']);
+
+            // Reset counter for not granted children items
+            $notGrantedCounter = 0;
+
             foreach ($configuration['children'] as $childName => $childConfiguration) {
                 // If no rights granted. Do not display item.
                 if (!$this->isGranted($childConfiguration)) {
+                    $notGrantedCounter++;
                     continue;
                 }
                 $this->createItem($item, $childName, $childConfiguration);
+            }
+
+            // If all children have no access remove parent
+            if ($notGrantedCounter == count($configuration['children'])); {
+                $parentItem->removeChild($name);
             }
         }
     }
