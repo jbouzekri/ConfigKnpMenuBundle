@@ -2,6 +2,7 @@ ConfigKnpMenuBundle
 ===================
 
 [![Build Status](https://travis-ci.org/jbouzekri/ConfigKnpMenuBundle.svg?branch=master)](https://travis-ci.org/jbouzekri/ConfigKnpMenuBundle)
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/0ba3e2e6-4b91-4886-aa8d-4620eb243845/mini.png)](https://insight.sensiolabs.com/projects/0ba3e2e6-4b91-4886-aa8d-4620eb243845)
 
 Introduction
 ------------
