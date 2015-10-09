@@ -174,7 +174,7 @@ class ConfigurationMenuProvider implements MenuProviderInterface
             $label = ($this->translator)
                 ? $this->translator->trans($configuration['label'])
                 : $configuration['label']
-            ?
+            ;
             $item->setLabel($label);
         }
 
