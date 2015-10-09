@@ -25,7 +25,7 @@ Add the repository to the composer.json file of your project and run the update 
 ``` json
 {
     "require": {
-        "jbouzekri/config-knp-menu-bundle": "3.0.0"
+        "jbouzekri/config-knp-menu-bundle": "3.1.0"
     }
 }
 ```
@@ -74,7 +74,7 @@ my_mega_menu:
             uri: "An uri. Use it if you do not define route parameter"
             route: "A sf2 route without @"
             routeParameters: "an array of parameters to pass to the route"
-            label: "My first label"
+            label: "My first label OR "translatable.tag" from default domain (message.yml)"
             order: An integer to sort the item in his level.
             attributes: An array of attributes passed to the knp item
             linkAttributes: An array of attributes passed to the a tag

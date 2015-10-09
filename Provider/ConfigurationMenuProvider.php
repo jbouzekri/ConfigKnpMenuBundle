@@ -18,6 +18,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Jb\Bundle\ConfigKnpMenuBundle\Event\ConfigureMenuEvent;
 use Knp\Menu\Provider\MenuProviderInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Bundle\FrameworkBundle\Translation\Translator;
 
 /**
  * ConfigurationMenuProvider
@@ -54,6 +55,12 @@ class ConfigurationMenuProvider implements MenuProviderInterface
      * @var array
      */
     protected $configuration;
+    
+    /**
+     *
+     * @var Translator 
+     */
+    private $translator;
 
     /**
      * Constructor
@@ -83,6 +90,16 @@ class ConfigurationMenuProvider implements MenuProviderInterface
     public function setSecurityContext(SecurityContextInterface $securityContext)
     {
         $this->securityContext = $securityContext;
+    }
+    
+    /**
+     * Set translator
+     *
+     * @param \Symfony\Bundle\FrameworkBundle\Translation\Translator $translator
+     */
+    public function setTranslator(Translator $translator)
+    {
+        $this->translator = $translator;
     }
 
     /**
@@ -152,9 +169,13 @@ class ConfigurationMenuProvider implements MenuProviderInterface
 
         $item = $parentItem->addChild($name, $options);
 
-        // Set label
+        // Set label, optionaly translated
         if (!empty($configuration['label'])) {
-            $item->setLabel($configuration['label']);
+            $label = ($this->translator)
+                ? $this->translator->trans($configuration['label'])
+                : $configuration['label']
+            ;
+            $item->setLabel($label);
         }
 
         // Set uri

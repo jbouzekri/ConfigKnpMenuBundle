@@ -8,5 +8,7 @@ services:
             - @knp_menu.factory
             - @event_dispatcher
             - @security.context
+        calls:
+            - [ setTranslator, [ @translator ] ]
         tags:
             - { name: knp_menu.provider }
