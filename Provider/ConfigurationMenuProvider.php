@@ -13,11 +13,11 @@
  */
 namespace Jb\Bundle\ConfigKnpMenuBundle\Provider;
 
-use Knp\Menu\FactoryInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Jb\Bundle\ConfigKnpMenuBundle\Event\ConfigureMenuEvent;
+use Knp\Menu\FactoryInterface;
 use Knp\Menu\Provider\MenuProviderInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * ConfigurationMenuProvider
@@ -42,11 +42,11 @@ class ConfigurationMenuProvider implements MenuProviderInterface
     protected $dispatcher;
 
     /**
-     * Security Context
+     * Security Authorization Checker
      *
-     * @var \Symfony\Component\Security\Core\SecurityContextInterface
+     * @var \Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface
      */
-    protected $securityContext;
+    protected $authorizationChecker;
 
     /**
      * An array of menu configuration
@@ -60,29 +60,30 @@ class ConfigurationMenuProvider implements MenuProviderInterface
      *
      * @param \Knp\Menu\FactoryInterface $factory the knp menu factory
      * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $dispatcher the event dispatcher
-     * @param \Symfony\Component\Security\Core\SecurityContextInterface $securityContext security is_granted check
+     * @param \Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface $authorizationChecker
+     *                                                                                     security is_granted checker
      * @param array $configuration An array of menu configuration
      */
     public function __construct(
         FactoryInterface $factory,
         EventDispatcherInterface $dispatcher,
-        SecurityContextInterface $securityContext,
-        $configuration = array()
+        AuthorizationCheckerInterface $authorizationChecker,
+        array $configuration = array()
     ) {
         $this->factory = $factory;
         $this->dispatcher = $dispatcher;
-        $this->securityContext = $securityContext;
+        $this->authorizationChecker = $authorizationChecker;
         $this->configuration = $configuration;
     }
 
     /**
-     * Set security context
+     * Set security authorization checker
      *
-     * @param \Symfony\Component\Security\Core\SecurityContextInterface $securityContext security
+     * @param \Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface $authorizationChecker
      */
-    public function setSecurityContext(SecurityContextInterface $securityContext)
+    public function setAuthorizationChecker(AuthorizationCheckerInterface $authorizationChecker)
     {
-        $this->securityContext = $securityContext;
+        $this->authorizationChecker = $authorizationChecker;
     }
 
     /**
@@ -290,14 +291,9 @@ class ConfigurationMenuProvider implements MenuProviderInterface
             return true;
         }
 
-        // No token. No rights.
-        if (!$this->securityContext->getToken()) {
-            return false;
-        }
-
         // Check if one of the role is granted
         foreach ($configuration['roles'] as $role) {
-            if ($this->securityContext->isGranted($role)) {
+            if ($this->authorizationChecker->isGranted($role)) {
                 return true;
             }
         }
