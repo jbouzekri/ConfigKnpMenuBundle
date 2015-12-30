@@ -40,7 +40,7 @@ class JbConfigKnpMenuExtension extends Extension
 
         foreach ($container->getParameter('kernel.bundles') as $bundle) {
             $reflection = new \ReflectionClass($bundle);
-            if (is_file($file = dirname($reflection->getFilename()) . '/Resources/config/navigation.yml')) {
+            if (is_file($file = dirname($reflection->getFileName()) . '/Resources/config/navigation.yml')) {
                 $configuredMenus = array_replace_recursive($configuredMenus, $this->parseFile($file));
                 $container->addResource(new FileResource($file));
             }
