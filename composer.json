@@ -10,11 +10,14 @@
         "symfony/event-dispatcher": "~2.1|~3.0",
         "symfony/yaml": "~2.1|~3.0"
     },
+    "require-dev": {
+        "phpunit/phpunit": "~4.8|~5.0",
+        "squizlabs/php_codesniffer": "~2.5"
+    },
     "autoload": {
         "psr-4": { "Jb\\Bundle\\ConfigKnpMenuBundle\\": "" }
     },
     "autoload-dev": {
         "psr-4": {"Jb\\Bundle\\ConfigKnpMenuBundle\\Tests\\": "Tests/"}
-    },
-    "target-dir": "Jb/Bundle/ConfigKnpMenuBundle"
+    }
 }
