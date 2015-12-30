@@ -5,9 +5,9 @@
  */
 namespace Jb\Bundle\ConfigKnpMenuBundle\Tests\Provider;
 
+use Jb\Bundle\ConfigKnpMenuBundle\Provider\ConfigurationMenuProvider;
 use Jb\Bundle\PhumborBundle\Tests\DependencyInjection\JbConfigKnpMenuExtensionTest;
 use Knp\Menu\MenuFactory;
-use Jb\Bundle\ConfigKnpMenuBundle\Provider\ConfigurationMenuProvider;
 
 /**
  * Tests for Jb\Bundle\ConfigKnpMenuBundle\Provider\ConfigurationMenuProvider
@@ -20,6 +20,11 @@ class ConfigurationMenuProviderTest extends \PHPUnit_Framework_TestCase
     protected $configurationProvider;
 
     /**
+     * @var \Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $authorizationChecker;
+
+    /**
      * Init Mock
      */
     public function setUp()
@@ -27,16 +32,11 @@ class ConfigurationMenuProviderTest extends \PHPUnit_Framework_TestCase
         $routingExtension = $this->getMockBuilder('Knp\\Menu\\Integration\\Symfony\\RoutingExtension')
             ->disableOriginalConstructor()
             ->getMock();
-        $routingExtension->expects($this->any())
+        $routingExtension
             ->method('buildOptions')
             ->will($this->returnValue(array('uri' => '/my-page')));
 
-        $securityContext = $this->getMockBuilder('Symfony\\Component\\Security\\Core\\SecurityContextInterface')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $securityContext->expects($this->any())
-            ->method('isGranted')
-            ->will($this->returnValue(true));
+        $this->authorizationChecker = $this->getMock('Symfony\\Component\\Security\\Core\\Authorization\\AuthorizationCheckerInterface');
 
         $menuFactory = new MenuFactory();
         $menuFactory->addExtension($routingExtension);
@@ -44,8 +44,12 @@ class ConfigurationMenuProviderTest extends \PHPUnit_Framework_TestCase
         $eventDispatcher = $this->getMock('Symfony\\Component\\EventDispatcher\\EventDispatcherInterface');
         $configuration = JbConfigKnpMenuExtensionTest::loadConfiguration();
 
-        $this->configurationProvider = new ConfigurationMenuProvider($menuFactory, $eventDispatcher, $securityContext);
-        $this->configurationProvider->setConfiguration($configuration);
+        $this->configurationProvider = new ConfigurationMenuProvider(
+            $menuFactory,
+            $eventDispatcher,
+            $this->authorizationChecker,
+            $configuration
+        );
     }
 
     /**
@@ -53,84 +57,86 @@ class ConfigurationMenuProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function testGet()
     {
+        $this->authorizationChecker
+            ->method('isGranted')
+            ->willReturn(true);
+
         $menu = $this->configurationProvider->get('main');
 
-        $this->assertEquals(
-            count($menu->getChildren()),
+        $this->assertCount(
             5,
+            $menu->getChildren(),
             'Menu item number'
         );
 
         $this->assertEquals(
-            $menu->getChild('first_item')->getUri(),
             '/first-item',
+            $menu->getChild('first_item')->getUri(),
             'First item uri'
         );
 
         $this->assertEquals(
-            $menu->getChild('third_item')->getUri(),
             '/my-page',
+            $menu->getChild('third_item')->getUri(),
             'Third item uri'
         );
 
         $this->assertEquals(
-            $menu->getChild('third_item')->getLabel(),
             'Third Item Label',
+            $menu->getChild('third_item')->getLabel(),
             'Third item label'
         );
         $this->assertEquals(
-            $menu->getChild('third_item')->getAttributes(),
             array('test' => 'test2'),
+            $menu->getChild('third_item')->getAttributes(),
             'Third item attributes'
         );
         $this->assertEquals(
-            $menu->getChild('third_item')->getLinkAttributes(),
             array('test' => 'test3'),
+            $menu->getChild('third_item')->getLinkAttributes(),
             'Third item link attributes'
         );
         $this->assertEquals(
-            $menu->getChild('third_item')->getChildrenAttributes(),
             array('test' => 'test4'),
+            $menu->getChild('third_item')->getChildrenAttributes(),
             'Third item children attributes'
         );
-        $this->assertEquals(
+        $this->assertFalse(
             $menu->getChild('third_item')->isDisplayed(),
-            false,
             'Third item display'
         );
-        $this->assertEquals(
+        $this->assertFalse(
             $menu->getChild('third_item')->getDisplayChildren(),
-            false,
             'Third item display children'
         );
 
         $position = 0;
         foreach ($menu->getChildren() as $key => $item) {
             if ($key == 'first_item') {
-                $this->assertEquals($position, 0, 'First item postion');
+                $this->assertEquals(0, $position, 'First item postion');
             }
             $position++;
         }
 
-        $this->assertEquals(
-            count($menu->getChild('first_item')->getChildren()),
+        $this->assertCount(
             0,
+            $menu->getChild('first_item')->getChildren(),
             'First item children count'
         );
-        $this->assertEquals(
-            count($menu->getChild('second_item')->getChildren()),
+        $this->assertCount(
             1,
+            $menu->getChild('second_item')->getChildren(),
             'Second item children count'
         );
-        $this->assertEquals(
-            count($menu->getChild('third_item')->getChildren()),
+        $this->assertCount(
             0,
+            $menu->getChild('third_item')->getChildren(),
             'Third item children count'
         );
 
         $this->assertEquals(
-            $menu->getChild('second_item')->getChild('second_item_first_child')->getLabel(),
             'First Child',
+            $menu->getChild('second_item')->getChild('second_item_first_child')->getLabel(),
             'Second item child label'
         );
     }
@@ -140,16 +146,20 @@ class ConfigurationMenuProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function testMultipleMenus()
     {
+        $this->authorizationChecker
+            ->method('isGranted')
+            ->willReturn(true);
+
         $menu = $this->configurationProvider->get('second_menu');
 
         $this->assertEquals(
-            $menu->getChild('item1')->getLabel(),
             'Item 1 Label',
+            $menu->getChild('item1')->getLabel(),
             'Second menu item 1 label'
         );
         $this->assertEquals(
-            $menu->getChild('item2')->getLabel(),
             'Item 2 Label',
+            $menu->getChild('item2')->getLabel(),
             'Second menu item 2 label'
         );
     }
@@ -157,40 +167,33 @@ class ConfigurationMenuProviderTest extends \PHPUnit_Framework_TestCase
     /**
      * test with roles
      */
-    public function testWithRoles()
+    public function testWithRolesNotGranted()
     {
-        $configurationProviderBackup = clone $this->configurationProvider;
-
-        $securityContext = $this->getMockBuilder('Symfony\\Component\\Security\\Core\\SecurityContextInterface')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $securityContext->expects($this->any())
+        $this->authorizationChecker
             ->method('isGranted')
-            ->will($this->returnValue(false));
+            ->willReturn(false);
 
-        $this->configurationProvider->setSecurityContext($securityContext);
         $menu = $this->configurationProvider->get('menu_roles');
 
-        $this->assertEquals(
+        $this->assertNull(
             $menu->getChild('item2'),
-            false,
             'not menu because no rights'
         );
+    }
 
-        $securityContext = $this->getMockBuilder('Symfony\\Component\\Security\\Core\\SecurityContextInterface')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $securityContext->expects($this->any())
+    /**
+     * test with roles
+     */
+    public function testWithRolesGranted()
+    {
+        $this->authorizationChecker
             ->method('isGranted')
-            ->will($this->returnValue(true));
-        $securityContext
-            ->method('getToken')
-            ->will($this->returnValue(true));
-        $this->configurationProvider->setSecurityContext($securityContext);
+            ->willReturn(true);
+
         $menu = $this->configurationProvider->get('menu_roles');
 
         $this->assertInstanceOf(
-            'Knp\Menu\ItemInterface',
+            'Knp\\Menu\\ItemInterface',
             $menu->getChild('item2'),
             'authenticated and rights'
         );
