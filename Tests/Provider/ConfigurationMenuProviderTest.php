@@ -20,7 +20,7 @@ class ConfigurationMenuProviderTest extends \PHPUnit_Framework_TestCase
     protected $configurationProvider;
 
     /**
-     * @var \Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var \PHPUnit_Framework_MockObject_MockObject
      */
     protected $authorizationChecker;
 
@@ -36,7 +36,9 @@ class ConfigurationMenuProviderTest extends \PHPUnit_Framework_TestCase
             ->method('buildOptions')
             ->will($this->returnValue(array('uri' => '/my-page')));
 
-        $this->authorizationChecker = $this->getMock('Symfony\\Component\\Security\\Core\\Authorization\\AuthorizationCheckerInterface');
+        $this->authorizationChecker = $this->getMock(
+            'Symfony\\Component\\Security\\Core\\Authorization\\AuthorizationCheckerInterface'
+        );
 
         $menuFactory = new MenuFactory();
         $menuFactory->addExtension($routingExtension);

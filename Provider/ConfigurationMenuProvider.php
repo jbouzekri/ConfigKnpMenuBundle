@@ -13,12 +13,11 @@
  */
 namespace Jb\Bundle\ConfigKnpMenuBundle\Provider;
 
-use Knp\Menu\FactoryInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Jb\Bundle\ConfigKnpMenuBundle\Event\ConfigureMenuEvent;
+use Knp\Menu\FactoryInterface;
 use Knp\Menu\Provider\MenuProviderInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
  * ConfigurationMenuProvider
@@ -61,14 +60,15 @@ class ConfigurationMenuProvider implements MenuProviderInterface
      *
      * @param \Knp\Menu\FactoryInterface $factory the knp menu factory
      * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $dispatcher the event dispatcher
-     * @param \Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface $authorizationChecker security is_granted check
+     * @param \Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface $authorizationChecker
+     *                                                                                     security is_granted checker
      * @param array $configuration An array of menu configuration
      */
     public function __construct(
         FactoryInterface $factory,
         EventDispatcherInterface $dispatcher,
         AuthorizationCheckerInterface $authorizationChecker,
-        $configuration = array()
+        array $configuration = array()
     ) {
         $this->factory = $factory;
         $this->dispatcher = $dispatcher;
@@ -79,7 +79,7 @@ class ConfigurationMenuProvider implements MenuProviderInterface
     /**
      * Set security authorization checker
      *
-     * @param \Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface $authorizationChecker security
+     * @param \Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface $authorizationChecker
      */
     public function setAuthorizationChecker(AuthorizationCheckerInterface $authorizationChecker)
     {
