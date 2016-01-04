@@ -7,6 +7,6 @@ services:
         arguments:
             - '@knp_menu.factory'
             - '@event_dispatcher'
-            - '@security.context'
+            - '@security.authorization_checker'
         tags:
             - { name: knp_menu.provider }
