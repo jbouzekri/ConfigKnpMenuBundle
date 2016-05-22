@@ -66,7 +66,6 @@ class JbConfigKnpMenuExtension extends Extension
         $container
             ->getDefinition('jb_config.menu.provider')
             ->addArgument($configuredMenus);
-
     }
 
     /**

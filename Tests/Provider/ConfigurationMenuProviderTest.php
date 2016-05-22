@@ -111,6 +111,11 @@ class ConfigurationMenuProviderTest extends \PHPUnit_Framework_TestCase
             $menu->getChild('third_item')->getDisplayChildren(),
             'Third item display children'
         );
+        $this->assertEquals(
+            array('key1' => 'value1', 'key2' => 'value2'),
+            $menu->getChild('third_item')->getExtras(),
+            'Third item extras'
+        );
 
         $position = 0;
         foreach ($menu->getChildren() as $key => $item) {
