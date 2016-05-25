@@ -182,6 +182,11 @@ class ConfigurationMenuProvider implements MenuProviderInterface
         if (!empty($configuration['labelAttributes'])) {
             $item->setLabelAttributes($configuration['labelAttributes']);
         }
+        
+        // set extras
+        if (!empty($configuration['extras'])) {
+            $item->setExtras($configuration['extras']);
+        }
 
         // set display
         if (isset($configuration['display'])) {
