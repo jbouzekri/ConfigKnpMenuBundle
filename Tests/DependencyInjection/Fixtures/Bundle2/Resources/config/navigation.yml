@@ -24,6 +24,9 @@ main:
                 test: test4
             display: false
             displayChildren: false
+            extras:
+              key1: value1
+              key2: value2
         four_item:
             label: "Four Item Label"
             order: 40

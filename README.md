@@ -83,6 +83,7 @@ my_mega_menu:
             display: boolean to hide the item
             displayChildren: boolean to hide the children
             roles: array of item (string roles) passed to isGranted securityContext method to check if user has rights in menu items
+            extras: An array of extra parameters (for example icon img, additional content etc.)
             children: # An array of subitems
                 second_level_item:
                     label: My second level

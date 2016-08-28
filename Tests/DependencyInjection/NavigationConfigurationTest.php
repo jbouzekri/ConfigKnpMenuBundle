@@ -72,7 +72,8 @@ class NavigationConfigurationTest extends \PHPUnit_Framework_TestCase
             'display' => true,
             'displayChildren' => true,
             'children' => array(),
-            'roles' => array()
+            'roles' => array(),
+            'extras' => array()
         );
     }
 
@@ -121,6 +122,7 @@ class NavigationConfigurationTest extends \PHPUnit_Framework_TestCase
             array( array('tree' => array('item1' => array('displayChildren' => array()))) ),
             array( array('tree' => array('item1' => array('children' => ''))) ),
             array( array('tree' => array('item1' => array('labelAttributes' => ''))) ),
+            array( array('tree' => array('item1' => array('extras' => ''))) ),
         );
     }
 
