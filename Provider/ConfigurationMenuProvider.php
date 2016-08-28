@@ -142,61 +142,7 @@ class ConfigurationMenuProvider implements MenuProviderInterface
      */
     protected function createItem($parentItem, $name, $configuration)
     {
-        // Manage routing options
-        $options = array();
-        if (!empty($configuration['route'])) {
-            $options['route'] = $configuration['route'];
-            if (!empty($configuration['routeParameters'])) {
-                $options['routeParameters'] = $configuration['routeParameters'];
-            }
-        }
-
-        $item = $parentItem->addChild($name, $options);
-
-        // Set label
-        if (!empty($configuration['label'])) {
-            $item->setLabel($configuration['label']);
-        }
-
-        // Set uri
-        if (!empty($configuration['uri'])) {
-            $item->setUri($configuration['uri']);
-        }
-
-        // set attributes
-        if (!empty($configuration['attributes'])) {
-            $item->setAttributes($configuration['attributes']);
-        }
-
-        // set linkAttributes
-        if (!empty($configuration['linkAttributes'])) {
-            $item->setLinkAttributes($configuration['linkAttributes']);
-        }
-
-        // set childrenAttributes
-        if (!empty($configuration['childrenAttributes'])) {
-            $item->setChildrenAttributes($configuration['childrenAttributes']);
-        }
-
-        // set labelAttributes
-        if (!empty($configuration['labelAttributes'])) {
-            $item->setLabelAttributes($configuration['labelAttributes']);
-        }
-        
-        // set extras
-        if (!empty($configuration['extras'])) {
-            $item->setExtras($configuration['extras']);
-        }
-
-        // set display
-        if (isset($configuration['display'])) {
-            $item->setDisplay($configuration['display']);
-        }
-
-        // set displayChildren
-        if (isset($configuration['displayChildren'])) {
-            $item->setDisplayChildren($configuration['displayChildren']);
-        }
+        $item = $parentItem->addChild($name, $configuration);
 
         // Recursive loop for appending children menu items
         if (!empty($configuration['children'])) {

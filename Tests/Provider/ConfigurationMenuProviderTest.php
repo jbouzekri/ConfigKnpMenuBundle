@@ -8,6 +8,7 @@ namespace Jb\Bundle\ConfigKnpMenuBundle\Tests\Provider;
 use Jb\Bundle\ConfigKnpMenuBundle\Provider\ConfigurationMenuProvider;
 use Jb\Bundle\PhumborBundle\Tests\DependencyInjection\JbConfigKnpMenuExtensionTest;
 use Knp\Menu\MenuFactory;
+use Knp\Menu\Integration\Symfony\RoutingExtension;
 
 /**
  * Tests for Jb\Bundle\ConfigKnpMenuBundle\Provider\ConfigurationMenuProvider
@@ -29,21 +30,19 @@ class ConfigurationMenuProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $routingExtension = $this->getMockBuilder('Knp\\Menu\\Integration\\Symfony\\RoutingExtension')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $routingExtension
-            ->method('buildOptions')
-            ->will($this->returnValue(array('uri' => '/my-page')));
+        $urlGenerator = $this->createMock('Symfony\\Component\\Routing\\Generator\\UrlGeneratorInterface');
+        $urlGenerator
+          ->method('generate')
+          ->will($this->returnValue('/my-page'));
 
-        $this->authorizationChecker = $this->getMock(
+        $this->authorizationChecker = $this->createMock(
             'Symfony\\Component\\Security\\Core\\Authorization\\AuthorizationCheckerInterface'
         );
 
         $menuFactory = new MenuFactory();
-        $menuFactory->addExtension($routingExtension);
+        $menuFactory->addExtension(new RoutingExtension($urlGenerator));
 
-        $eventDispatcher = $this->getMock('Symfony\\Component\\EventDispatcher\\EventDispatcherInterface');
+        $eventDispatcher = $this->createMock('Symfony\\Component\\EventDispatcher\\EventDispatcherInterface');
         $configuration = JbConfigKnpMenuExtensionTest::loadConfiguration();
 
         $this->configurationProvider = new ConfigurationMenuProvider(
@@ -111,8 +110,15 @@ class ConfigurationMenuProviderTest extends \PHPUnit_Framework_TestCase
             $menu->getChild('third_item')->getDisplayChildren(),
             'Third item display children'
         );
+
         $this->assertEquals(
-            array('key1' => 'value1', 'key2' => 'value2'),
+            array(
+              'key1' => 'value1',
+              'key2' => 'value2',
+              'routes' => array(
+                array('route' => 'my_route', 'parameters' => array('test' => 'test1'))
+              )
+            ),
             $menu->getChild('third_item')->getExtras(),
             'Third item extras'
         );

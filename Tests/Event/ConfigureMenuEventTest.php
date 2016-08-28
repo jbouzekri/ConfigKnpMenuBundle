@@ -32,8 +32,8 @@ class ConfigureMenuEventTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->factory = $this->getMock('Knp\Menu\FactoryInterface');
-        $this->menu = $this->getMock('Knp\Menu\ItemInterface');
+        $this->factory = $this->createMock('Knp\Menu\FactoryInterface');
+        $this->menu = $this->createMock('Knp\Menu\ItemInterface');
 
         $this->event = new ConfigureMenuEvent($this->factory, $this->menu);
     }
