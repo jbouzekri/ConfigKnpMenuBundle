@@ -3,7 +3,7 @@ parameters:
 
 services:
     jb_config.menu.provider:
-        class: %jb_config.menu.provider.class%
+        class: '%jb_config.menu.provider.class%'
         arguments:
             - '@knp_menu.factory'
             - '@event_dispatcher'
