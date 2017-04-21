@@ -97,6 +97,17 @@ class ConfigurationMenuProvider implements MenuProviderInterface
     }
 
     /**
+     * Return configuration of menus
+     *
+     * @return array
+     */
+    public function getConfiguration()
+    {
+        return $this->configuration;
+    }
+
+
+    /**
      * {@inheritDoc}
      */
     public function get($name, array $options = array())
