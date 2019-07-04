@@ -33,12 +33,12 @@ class JbConfigKnpMenuExtension extends Extension
     public function load(array $configs, ContainerBuilder $container)
     {
         $systemPaths = array(
-            $container->getParameter('kernel.root_dir'),
-            $container->getParameter('kernel.project_dir'),
+            $container->getParameter('kernel.root_dir', null),
+            $container->getParameter('kernel.project_dir', null),
         );
         $configuredMenus = array();
         foreach($systemPaths as $systemPath){
-            if (is_file($file = $systemPath . '/config/navigation.yml')) {
+            if ($systemPath && is_file($file = $systemPath . '/config/navigation.yml')) {
                 $configuredMenus = array_replace_recursive($configuredMenus, $this->parseFile($file));
                 $container->addResource(new FileResource($file));
             }
