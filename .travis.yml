@@ -8,6 +8,7 @@ php:
 
 before_script:
   - phpenv config-add travis.php.ini
+  - php -i | grep memory_limit
   - composer install -n
 
 script:
