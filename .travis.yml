@@ -9,7 +9,7 @@ php:
 before_script:
   - phpenv config-add travis.php.ini
   - php -i | grep memory_limit
-  - php -dmemory_limit=-1 composer install -n
+  - COMPOSER_MEMORY_LIMIT=-1 composer install -n
 
 script:
   - vendor/bin/phpunit -c Tests/
