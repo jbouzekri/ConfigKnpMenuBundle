@@ -38,7 +38,7 @@ class JbConfigKnpMenuExtension extends Extension
         );
         $configuredMenus = array();
         foreach ($systemPaths as $systemPath) {
-            if (!$container->hasParameter($systemPath) {
+            if (!$container->hasParameter($systemPath)) {
                 continue;
             }
 
