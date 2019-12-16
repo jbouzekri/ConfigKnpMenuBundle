@@ -44,9 +44,9 @@ class NavigationConfiguration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
+        $treeBuilder = new TreeBuilder($this->rootName, 'array', new MenuTreeBuilder());
 
-        $rootNode = $treeBuilder->root($this->rootName, 'array', new MenuTreeBuilder());
+        $rootNode = $treeBuilder->getRootNode();
 
         // Tree node level added in order to keep the array keys for the first level of nodes
         $rootNode

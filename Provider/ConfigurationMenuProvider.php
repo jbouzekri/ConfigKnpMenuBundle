@@ -15,6 +15,7 @@ namespace Jb\Bundle\ConfigKnpMenuBundle\Provider;
 
 use Jb\Bundle\ConfigKnpMenuBundle\Event\ConfigureMenuEvent;
 use Knp\Menu\FactoryInterface;
+use Knp\Menu\ItemInterface;
 use Knp\Menu\Provider\MenuProviderInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -110,7 +111,7 @@ class ConfigurationMenuProvider implements MenuProviderInterface
     /**
      * {@inheritDoc}
      */
-    public function get($name, array $options = array())
+    public function get(string $name, array $options = array()) : ItemInterface
     {
         // Create menu root item
         $menu = $this->factory->createItem($name);
@@ -138,7 +139,7 @@ class ConfigurationMenuProvider implements MenuProviderInterface
     /**
      * {@inheritDoc}
      */
-    public function has($name, array $options = array())
+    public function has(string $name, array $options = array()): bool
     {
         return !empty($this->configuration[$name]);
     }
