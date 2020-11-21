@@ -1,4 +1,6 @@
+.idea
 composer.lock
 vendor
 coverage
 Tests/phpunit.xml
+Tests/.phpunit.result.cache

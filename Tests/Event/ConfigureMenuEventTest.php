@@ -10,7 +10,7 @@ use Jb\Bundle\ConfigKnpMenuBundle\Event\ConfigureMenuEvent;
 /**
  * Tests for Jb\Bundle\ConfigKnpMenuBundle\Event\ConfigureMenuEvent
  */
-class ConfigureMenuEventTest extends \PHPUnit_Framework_TestCase
+class ConfigureMenuEventTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var \Jb\Bundle\ConfigKnpMenuBundle\Event\ConfigureMenuEvent
@@ -30,7 +30,7 @@ class ConfigureMenuEventTest extends \PHPUnit_Framework_TestCase
     /**
      * Init Mock
      */
-    public function setUp()
+    public function setUp(): void
     {
         $this->factory = $this->createMock('Knp\Menu\FactoryInterface');
         $this->menu = $this->createMock('Knp\Menu\ItemInterface');

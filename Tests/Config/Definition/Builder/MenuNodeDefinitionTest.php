@@ -35,10 +35,10 @@ use Jb\Bundle\ConfigKnpMenuBundle\Config\Definition\Builder\MenuNodeDefinition;
 /**
  * Tests for Jb\Bundle\ConfigKnpMenuBundle\Config\Definition\Builder\MenuNodeDefinition
  */
-class MenuNodeDefinitionTest extends \PHPUnit_Framework_TestCase
+class MenuNodeDefinitionTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var \Jb\Bundle\ConfigKnpMenuBundle\Config\Definition\Builder\MenuTreeBuilder
      */
     protected $builder;
 
@@ -50,7 +50,7 @@ class MenuNodeDefinitionTest extends \PHPUnit_Framework_TestCase
     /**
      * Init Mock
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->builder = $this
             ->getMockBuilder('Jb\Bundle\ConfigKnpMenuBundle\Config\Definition\Builder\MenuTreeBuilder')

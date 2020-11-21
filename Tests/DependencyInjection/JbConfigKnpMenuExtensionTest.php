@@ -11,7 +11,7 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
  *
  * @author Jonathan Bouzekri <jonathan.bouzekri@gmail.com>
  */
-class JbConfigKnpMenuExtensionTest extends \PHPUnit_Framework_TestCase
+class JbConfigKnpMenuExtensionTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Test loading data from file

@@ -3,6 +3,7 @@
 namespace Jb\Bundle\ConfigKnpMenuBundle\Tests\DependencyInjection;
 
 use Jb\Bundle\ConfigKnpMenuBundle\DependencyInjection\NavigationConfiguration;
+use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\Definition\Processor;
 
 /**
@@ -10,7 +11,7 @@ use Symfony\Component\Config\Definition\Processor;
  *
  * @author Jonathan Bouzekri <jonathan.bouzekri@gmail.com>
  */
-class NavigationConfigurationTest extends \PHPUnit_Framework_TestCase
+class NavigationConfigurationTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var \Jb\Bundle\ConfigKnpMenuBundle\DependencyInjection\NavigationConfiguration
@@ -20,7 +21,7 @@ class NavigationConfigurationTest extends \PHPUnit_Framework_TestCase
     /**
      * Init mock
      */
-    public function setUp()
+    public function setUp(): void
     {
         $this->navigationConfiguration = new NavigationConfiguration();
         $this->navigationConfiguration->setMenuRootName('my_menu');
@@ -93,11 +94,12 @@ class NavigationConfigurationTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
      * @dataProvider getInvalidTypeData
      */
     public function testInvalidData($data)
     {
+        $this->expectException(InvalidConfigurationException::class);
+
         $processor = new Processor();
         $processor->processConfiguration($this->navigationConfiguration, array($data));
     }
