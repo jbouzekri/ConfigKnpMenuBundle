@@ -13,7 +13,7 @@ use Knp\Menu\Integration\Symfony\RoutingExtension;
 /**
  * Tests for Jb\Bundle\ConfigKnpMenuBundle\Provider\ConfigurationMenuProvider
  */
-class ConfigurationMenuProviderTest extends \PHPUnit_Framework_TestCase
+class ConfigurationMenuProviderTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var \Jb\Bundle\ConfigKnpMenuBundle\Provider\ConfigurationMenuProvider
@@ -21,14 +21,14 @@ class ConfigurationMenuProviderTest extends \PHPUnit_Framework_TestCase
     protected $configurationProvider;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var \Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface
      */
     protected $authorizationChecker;
 
     /**
      * Init Mock
      */
-    public function setUp()
+    protected function setUp(): void
     {
         $urlGenerator = $this->createMock('Symfony\\Component\\Routing\\Generator\\UrlGeneratorInterface');
         $urlGenerator

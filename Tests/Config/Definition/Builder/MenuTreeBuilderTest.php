@@ -31,11 +31,12 @@
 namespace Jb\Bundle\ConfigKnpMenuBundle\Tests\Config\Definition\Builder;
 
 use Jb\Bundle\ConfigKnpMenuBundle\Config\Definition\Builder\MenuTreeBuilder;
+use ReflectionClass;
 
 /**
  * Tests for Jb\Bundle\ConfigKnpMenuBundle\Config\Definition\Builder\MenuTreeBuilder
  */
-class MenuTreeBuilderTest extends \PHPUnit_Framework_TestCase
+class MenuTreeBuilderTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var \Jb\Bundle\ConfigKnpMenuBundle\Config\Definition\Builder\MenuTreeBuilder
@@ -45,7 +46,7 @@ class MenuTreeBuilderTest extends \PHPUnit_Framework_TestCase
     /**
      * Init builder
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->builder = new MenuTreeBuilder();
     }
@@ -56,7 +57,11 @@ class MenuTreeBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstructor()
     {
-        $nodeMapping = $this->readAttribute($this->builder, 'nodeMapping');
+        $reflection = new ReflectionClass($this->builder);
+        $property = $reflection->getProperty('nodeMapping');
+        $property->setAccessible(true);
+        $nodeMapping = $property->getValue($this->builder);
+
         $this->assertArrayHasKey('menu', $nodeMapping);
         $this->assertEquals(
             'Jb\Bundle\ConfigKnpMenuBundle\Config\Definition\Builder\MenuNodeDefinition',

@@ -111,7 +111,7 @@ class ConfigurationMenuProvider implements MenuProviderInterface
     /**
      * {@inheritDoc}
      */
-    public function get(string $name, array $options = array()) : ItemInterface
+    public function get(string $name, array $options = []) : ItemInterface
     {
         // Create menu root item
         $menu = $this->factory->createItem($name);
@@ -131,7 +131,7 @@ class ConfigurationMenuProvider implements MenuProviderInterface
             $this->createItem($menu, $key, $childConfiguration);
         }
 
-        $this->dispatcher->dispatch(ConfigureMenuEvent::CONFIGURE, new ConfigureMenuEvent($this->factory, $menu));
+        $this->dispatcher->dispatch(new ConfigureMenuEvent($this->factory, $menu), ConfigureMenuEvent::CONFIGURE);
 
         return $menu;
     }
@@ -139,7 +139,7 @@ class ConfigurationMenuProvider implements MenuProviderInterface
     /**
      * {@inheritDoc}
      */
-    public function has(string $name, array $options = array()): bool
+    public function has(string $name, array $options = []): bool
     {
         return !empty($this->configuration[$name]);
     }
