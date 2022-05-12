@@ -31,6 +31,7 @@
 namespace Jb\Bundle\ConfigKnpMenuBundle\Config\Definition\Builder;
 
 use Symfony\Component\Config\Definition\Builder\NodeBuilder;
+use Symfony\Component\Config\Definition\Builder\NodeParentInterface;
 
 /**
  * MenuTreeBuilder
@@ -46,16 +47,16 @@ class MenuTreeBuilder extends NodeBuilder
     {
         parent::__construct();
 
-        $this->nodeMapping['menu'] = __NAMESPACE__ . '\\MenuNodeDefinition';
+        $this->nodeMapping['menu'] = MenuNodeDefinition::class;
     }
 
     /**
      * Creates a child menu node
      *
      * @param  string $name The name of the node
-     * @return MenuNodeDefinition The child node
+     * @return NodeParentInterface The child node
      */
-    public function menuNode($name)
+    public function menuNode(string $name): NodeParentInterface
     {
         return $this->node($name, 'menu');
     }

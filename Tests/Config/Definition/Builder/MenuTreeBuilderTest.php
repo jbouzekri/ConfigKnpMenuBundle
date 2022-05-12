@@ -31,17 +31,16 @@
 namespace Jb\Bundle\ConfigKnpMenuBundle\Tests\Config\Definition\Builder;
 
 use Jb\Bundle\ConfigKnpMenuBundle\Config\Definition\Builder\MenuTreeBuilder;
+use PHPUnit\Framework\TestCase;
 use ReflectionClass;
+use Jb\Bundle\ConfigKnpMenuBundle\Config\Definition\Builder\MenuNodeDefinition;
 
 /**
  * Tests for Jb\Bundle\ConfigKnpMenuBundle\Config\Definition\Builder\MenuTreeBuilder
  */
-class MenuTreeBuilderTest extends \PHPUnit\Framework\TestCase
+class MenuTreeBuilderTest extends TestCase
 {
-    /**
-     * @var \Jb\Bundle\ConfigKnpMenuBundle\Config\Definition\Builder\MenuTreeBuilder
-     */
-    protected $builder;
+    protected MenuTreeBuilder $builder;
 
     /**
      * Init builder
@@ -55,7 +54,7 @@ class MenuTreeBuilderTest extends \PHPUnit\Framework\TestCase
      * Test constructor
      * Verify if the menu node has been registered
      */
-    public function testConstructor()
+    public function testConstructor(): void
     {
         $reflection = new ReflectionClass($this->builder);
         $property = $reflection->getProperty('nodeMapping');
@@ -64,7 +63,7 @@ class MenuTreeBuilderTest extends \PHPUnit\Framework\TestCase
 
         $this->assertArrayHasKey('menu', $nodeMapping);
         $this->assertEquals(
-            'Jb\Bundle\ConfigKnpMenuBundle\Config\Definition\Builder\MenuNodeDefinition',
+            MenuNodeDefinition::class,
             $nodeMapping['menu']
         );
     }
@@ -72,11 +71,11 @@ class MenuTreeBuilderTest extends \PHPUnit\Framework\TestCase
     /**
      * Test if builder return a menu node
      */
-    public function testMenuNode()
+    public function testMenuNode(): void
     {
         $nodeDefinition = $this->builder->menuNode('test');
         $this->assertInstanceOf(
-            'Jb\Bundle\ConfigKnpMenuBundle\Config\Definition\Builder\MenuNodeDefinition',
+            MenuNodeDefinition::class,
             $nodeDefinition
         );
         $this->assertEquals('test', $nodeDefinition->getNode()->getName());

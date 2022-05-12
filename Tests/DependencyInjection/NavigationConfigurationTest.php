@@ -3,6 +3,7 @@
 namespace Jb\Bundle\ConfigKnpMenuBundle\Tests\DependencyInjection;
 
 use Jb\Bundle\ConfigKnpMenuBundle\DependencyInjection\NavigationConfiguration;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\Definition\Processor;
 
@@ -11,10 +12,10 @@ use Symfony\Component\Config\Definition\Processor;
  *
  * @author Jonathan Bouzekri <jonathan.bouzekri@gmail.com>
  */
-class NavigationConfigurationTest extends \PHPUnit\Framework\TestCase
+class NavigationConfigurationTest extends TestCase
 {
     /**
-     * @var \Jb\Bundle\ConfigKnpMenuBundle\DependencyInjection\NavigationConfiguration
+     * @var NavigationConfiguration
      */
     protected $navigationConfiguration;
 
@@ -30,7 +31,7 @@ class NavigationConfigurationTest extends \PHPUnit\Framework\TestCase
     /**
      * Test the default configuration
      */
-    public function testDefaultConfig()
+    public function testDefaultConfig(): void
     {
         $processor = new Processor();
         $config = $processor->processConfiguration($this->navigationConfiguration, array());
@@ -48,10 +49,10 @@ class NavigationConfigurationTest extends \PHPUnit\Framework\TestCase
      *
      * @return array
      */
-    public static function buildRandomMenuItem($number = 1)
+    public static function buildRandomMenuItem(int $number = 1): array
     {
         return array(
-            'uri' => 'http://www.google.fr',
+            'uri' => 'https://www.google.fr',
             'route' => 'test'.$number,
             'routeParameters' => array(
                 'test' => 'test'.$number
@@ -81,7 +82,7 @@ class NavigationConfigurationTest extends \PHPUnit\Framework\TestCase
     /**
      * Test full tree configuration
      */
-    public function testTransformationConfiguration()
+    public function testTransformationConfiguration(): void
     {
 
         $data = array('childrenAttributes' => array(), 'tree' => array('item1' => self::buildRandomMenuItem()));
@@ -96,7 +97,7 @@ class NavigationConfigurationTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider getInvalidTypeData
      */
-    public function testInvalidData($data)
+    public function testInvalidData($data): void
     {
         $this->expectException(InvalidConfigurationException::class);
 
@@ -109,7 +110,7 @@ class NavigationConfigurationTest extends \PHPUnit\Framework\TestCase
      *
      * @return array
      */
-    public function getInvalidTypeData()
+    public function getInvalidTypeData(): array
     {
         return array(
             array( array('tree' => array('item1' => array('uri' => array()))) ),
@@ -133,7 +134,7 @@ class NavigationConfigurationTest extends \PHPUnit\Framework\TestCase
      *
      * @return array
      */
-    protected static function getBundleDefaultConfig()
+    protected static function getBundleDefaultConfig(): array
     {
         return array('childrenAttributes' => array(), 'tree' => array());
     }

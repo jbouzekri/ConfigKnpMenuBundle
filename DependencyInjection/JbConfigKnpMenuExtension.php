@@ -11,8 +11,12 @@
 /**
  * @namespace
  */
+
 namespace Jb\Bundle\ConfigKnpMenuBundle\DependencyInjection;
 
+use Exception;
+use ReflectionClass;
+use ReflectionException;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\Yaml\Yaml;
@@ -30,34 +34,43 @@ class JbConfigKnpMenuExtension extends Extension
     /**
      * {@inheritDoc}
      */
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
+        $configuredMenus = array();
+
         $systemPaths = array(
             'kernel.root_dir',
             'kernel.project_dir',
         );
-        $configuredMenus = array();
         foreach ($systemPaths as $systemPath) {
             if (!$container->hasParameter($systemPath)) {
                 continue;
             }
+            $configuredMenus = $this->loadNavigationYaml(
+                $container,
+                $configuredMenus,
+                $container->getParameter($systemPath) . '/config/navigation.yml'
+            );
+        }
 
-            if (is_file($file = $container->getParameter($systemPath) . '/config/navigation.yml')) {
-                $configuredMenus = array_replace_recursive($configuredMenus, $this->parseFile($file));
-                $container->addResource(new FileResource($file));
+        $bundles = $container->getParameter('kernel.bundles');
+        foreach ($bundles as $bundle) {
+            try {
+                $reflection = new ReflectionClass($bundle);
+                $configuredMenus = $this->loadNavigationYaml(
+                    $container,
+                    $configuredMenus,
+                    dirname($reflection->getFileName()) . '/Resources/config/navigation.yml'
+                );
+            } catch (ReflectionException $e) {
             }
         }
 
-        foreach ($container->getParameter('kernel.bundles') as $bundle) {
-            $reflection = new \ReflectionClass($bundle);
-            if (is_file($file = dirname($reflection->getFileName()) . '/Resources/config/navigation.yml')) {
-                $configuredMenus = array_replace_recursive($configuredMenus, $this->parseFile($file));
-                $container->addResource(new FileResource($file));
-            }
+        try {
+            $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+            $loader->load('services.yml');
+        } catch (Exception $e) {
         }
-
-        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('services.yml');
 
         // validate menu configurations
         foreach ($configuredMenus as $rootName => $menuConfiguration) {
@@ -78,6 +91,15 @@ class JbConfigKnpMenuExtension extends Extension
             ->addArgument($configuredMenus);
     }
 
+    private function loadNavigationYaml(ContainerBuilder $container, array $configuredMenus, string $file): array
+    {
+        if (is_file($file)) {
+            $configuredMenus = array_replace_recursive($configuredMenus, $this->parseFile($file));
+            $container->addResource(new FileResource($file));
+        }
+        return $configuredMenus;
+    }
+
     /**
      * Parse a navigation.yml file
      *
@@ -85,7 +107,7 @@ class JbConfigKnpMenuExtension extends Extension
      *
      * @return array
      */
-    public function parseFile($file)
+    public function parseFile(string $file): array
     {
         $bundleConfig = Yaml::parse(file_get_contents(realpath($file)));
 

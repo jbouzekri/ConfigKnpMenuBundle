@@ -14,6 +14,7 @@
 namespace Jb\Bundle\ConfigKnpMenuBundle\Config\Definition\Builder;
 
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
+use Symfony\Component\Config\Definition\Builder\NodeParentInterface;
 
 /**
  * Configuration definition for menu nodes
@@ -22,14 +23,10 @@ class MenuNodeDefinition extends ArrayNodeDefinition
 {
     /**
      * Make menu hierarchy
-     *
-     * @param  int $depth
-     *
-     * @return MenuNodeDefinition
      */
-    public function menuNodeHierarchy($depth = 10)
+    public function menuNodeHierarchy(int $depth = 10): NodeParentInterface
     {
-        if ($depth == 0) {
+        if ($depth === 0) {
             return $this;
         }
 
