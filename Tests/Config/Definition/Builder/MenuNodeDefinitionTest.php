@@ -31,21 +31,18 @@
 namespace Jb\Bundle\ConfigKnpMenuBundle\Tests\Unit\Config\Definition\Builder;
 
 use Jb\Bundle\ConfigKnpMenuBundle\Config\Definition\Builder\MenuNodeDefinition;
+use Jb\Bundle\ConfigKnpMenuBundle\Config\Definition\Builder\MenuTreeBuilder;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Tests for Jb\Bundle\ConfigKnpMenuBundle\Config\Definition\Builder\MenuNodeDefinition
  */
-class MenuNodeDefinitionTest extends \PHPUnit\Framework\TestCase
+class MenuNodeDefinitionTest extends TestCase
 {
-    /**
-     * @var \Jb\Bundle\ConfigKnpMenuBundle\Config\Definition\Builder\MenuTreeBuilder
-     */
-    protected $builder;
+    protected MenuTreeBuilder|MockObject $builder;
 
-    /**
-     * @var MenuNodeDefinition
-     */
-    protected $definition;
+    protected MenuNodeDefinition $definition;
 
     /**
      * Init Mock
@@ -53,8 +50,8 @@ class MenuNodeDefinitionTest extends \PHPUnit\Framework\TestCase
     protected function setUp(): void
     {
         $this->builder = $this
-            ->getMockBuilder('Jb\Bundle\ConfigKnpMenuBundle\Config\Definition\Builder\MenuTreeBuilder')
-            ->setMethods(
+            ->getMockBuilder(MenuTreeBuilder::class)
+            ->onlyMethods(
                 array(
                     'node',
                     'children',
@@ -74,13 +71,13 @@ class MenuNodeDefinitionTest extends \PHPUnit\Framework\TestCase
     /**
      * Test that if depth is 0, then the menu node definition is returned
      */
-    public function testMenuNodeHierarchyZeroDepth()
+    public function testMenuNodeHierarchyZeroDepth(): void
     {
         $this->builder->expects($this->never())
             ->method('node');
 
         $this->assertInstanceOf(
-            'Jb\Bundle\ConfigKnpMenuBundle\Config\Definition\Builder\MenuNodeDefinition',
+            MenuNodeDefinition::class,
             $this->definition->menuNodeHierarchy(0)
         );
     }
@@ -88,25 +85,25 @@ class MenuNodeDefinitionTest extends \PHPUnit\Framework\TestCase
     /**
      * Test the recursive calls
      */
-    public function testMenuNodeHierarchyNonZeroDepth()
+    public function testMenuNodeHierarchyNonZeroDepth(): void
     {
-        $this->builder->expects($this->any())
+        $this->builder
             ->method('node')
             ->will($this->returnSelf());
 
-        $this->builder->expects($this->any())
+        $this->builder
             ->method('children')
             ->will($this->returnSelf());
 
-        $this->builder->expects($this->any())
+        $this->builder
             ->method('scalarNode')
             ->will($this->returnSelf());
 
-        $this->builder->expects($this->any())
+        $this->builder
             ->method('end')
             ->will($this->returnSelf());
 
-        $this->builder->expects($this->any())
+        $this->builder
             ->method('prototype')
             ->will($this->returnSelf());
 
@@ -120,10 +117,10 @@ class MenuNodeDefinitionTest extends \PHPUnit\Framework\TestCase
             ->with(9)
             ->will($this->returnSelf());
 
-        $this->builder->expects($this->any())
+        $this->builder
             ->method('defaultTrue')
             ->will($this->returnSelf());
 
-        $this->definition->menuNodeHierarchy(10);
+        $this->definition->menuNodeHierarchy();
     }
 }

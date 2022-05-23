@@ -13,6 +13,7 @@
  */
 namespace Jb\Bundle\ConfigKnpMenuBundle\Provider;
 
+use Closure;
 use Jb\Bundle\ConfigKnpMenuBundle\Event\ConfigureMenuEvent;
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
@@ -28,41 +29,17 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
  */
 class ConfigurationMenuProvider implements MenuProviderInterface
 {
-    /**
-     * the knp menu factory
-     *
-     * @var \Knp\Menu\FactoryInterface
-     */
-    protected $factory;
-
-    /**
-     * the event dispatcher
-     *
-     * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface
-     */
-    protected $dispatcher;
-
-    /**
-     * Security Authorization Checker
-     *
-     * @var \Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface
-     */
-    protected $authorizationChecker;
-
-    /**
-     * An array of menu configuration
-     *
-     * @var array
-     */
-    protected $configuration;
+    protected FactoryInterface $factory;
+    protected EventDispatcherInterface $dispatcher;
+    protected AuthorizationCheckerInterface $authorizationChecker;
+    protected array $configuration;
 
     /**
      * Constructor
      *
-     * @param \Knp\Menu\FactoryInterface $factory the knp menu factory
-     * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $dispatcher the event dispatcher
-     * @param \Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface $authorizationChecker
-     *                                                                                     security is_granted checker
+     * @param FactoryInterface $factory the knp menu factory
+     * @param EventDispatcherInterface $dispatcher the event dispatcher
+     * @param AuthorizationCheckerInterface $authorizationChecker security is_granted checker
      * @param array $configuration An array of menu configuration
      */
     public function __construct(
@@ -77,32 +54,23 @@ class ConfigurationMenuProvider implements MenuProviderInterface
         $this->configuration = $configuration;
     }
 
-    /**
-     * Set security authorization checker
-     *
-     * @param \Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface $authorizationChecker
-     */
-    public function setAuthorizationChecker(AuthorizationCheckerInterface $authorizationChecker)
+    public function setAuthorizationChecker(AuthorizationCheckerInterface $authorizationChecker): void
     {
         $this->authorizationChecker = $authorizationChecker;
     }
 
     /**
      * Load configuration of menus
-     *
-     * @param array $configuration An array of menu configuration
      */
-    public function setConfiguration(array $configuration)
+    public function setConfiguration(array $configuration): void
     {
         $this->configuration = $configuration;
     }
 
     /**
      * Return configuration of menus
-     *
-     * @return array
      */
-    public function getConfiguration()
+    public function getConfiguration(): array
     {
         return $this->configuration;
     }
@@ -148,11 +116,11 @@ class ConfigurationMenuProvider implements MenuProviderInterface
      * Add item to the menu
      * WARNING : recursive function. Is executed while there are children to the item
      *
-     * @param \Knp\Menu\ItemInterface $parentItem the parent item
+     * @param ItemInterface $parentItem the parent item
      * @param string $name the name of the new item
      * @param array $configuration the configuration for the new item
      */
-    protected function createItem($parentItem, $name, $configuration)
+    protected function createItem(ItemInterface $parentItem, string $name, array $configuration): void
     {
         $item = $parentItem->addChild($name, $configuration);
 
@@ -174,10 +142,10 @@ class ConfigurationMenuProvider implements MenuProviderInterface
      *
      * @param array $items an array of items
      */
-    protected function sortItems(&$items)
+    protected function sortItems(array &$items): void
     {
         $this->safeUaSortItems($items, function ($item1, $item2) {
-            if (empty($item1['order']) || empty($item2['order']) || $item1['order'] == $item2['order']) {
+            if (empty($item1['order']) || empty($item2['order']) || $item1['order'] === $item2['order']) {
                 return 0;
             }
 
@@ -188,35 +156,29 @@ class ConfigurationMenuProvider implements MenuProviderInterface
     /**
      * Safe sort items
      * (taken from http://php.net/manual/en/function.uasort.php#114535)
-     *
-     * @param array $array
-     * @param Closure $cmp_function
-     *
-     * @return null
      */
-    protected function safeUaSortItems(&$array, $cmp_function)
+    protected function safeUaSortItems(array &$array, Closure $cmp_function): void
     {
         if (count($array) < 2) {
             return;
         }
 
-        $halfway = count($array) / 2;
+        $halfway = (int)(count($array) / 2);
         $array1 = array_slice($array, 0, $halfway, true);
         $array2 = array_slice($array, $halfway, null, true);
 
         $this->safeUaSortItems($array1, $cmp_function);
         $this->safeUaSortItems($array2, $cmp_function);
 
-        if (call_user_func($cmp_function, end($array1), reset($array2)) < 1) {
+        if ($cmp_function(end($array1), reset($array2)) < 1) {
             $array = $array1 + $array2;
             return;
         }
 
         $array = array();
         reset($array1);
-        reset($array2);
         while (current($array1) && current($array2)) {
-            if (call_user_func($cmp_function, current($array1), current($array2)) < 1) {
+            if ($cmp_function(current($array1), current($array2)) < 1) {
                 $array[key($array1)] = current($array1);
                 next($array1);
             } else {
@@ -232,17 +194,12 @@ class ConfigurationMenuProvider implements MenuProviderInterface
             $array[key($array2)] = current($array2);
             next($array2);
         }
-        return;
     }
 
     /**
      * Check if security context grant rights on menu item
-     *
-     * @param array $configuration
-     *
-     * @return boolean
      */
-    protected function isGranted(array $configuration)
+    protected function isGranted(array $configuration): bool
     {
         // If no role configuration. Grant rights.
         if (!isset($configuration['roles'])) {

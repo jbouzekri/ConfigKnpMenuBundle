@@ -9,19 +9,24 @@ use Jb\Bundle\ConfigKnpMenuBundle\Provider\ConfigurationMenuProvider;
 use Jb\Bundle\PhumborBundle\Tests\DependencyInjection\JbConfigKnpMenuExtensionTest;
 use Knp\Menu\MenuFactory;
 use Knp\Menu\Integration\Symfony\RoutingExtension;
+use PHPUnit\Framework\TestCase;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Knp\Menu\ItemInterface;
 
 /**
  * Tests for Jb\Bundle\ConfigKnpMenuBundle\Provider\ConfigurationMenuProvider
  */
-class ConfigurationMenuProviderTest extends \PHPUnit\Framework\TestCase
+class ConfigurationMenuProviderTest extends TestCase
 {
     /**
-     * @var \Jb\Bundle\ConfigKnpMenuBundle\Provider\ConfigurationMenuProvider
+     * @var ConfigurationMenuProvider
      */
     protected $configurationProvider;
 
     /**
-     * @var \Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface
+     * @var AuthorizationCheckerInterface
      */
     protected $authorizationChecker;
 
@@ -30,19 +35,19 @@ class ConfigurationMenuProviderTest extends \PHPUnit\Framework\TestCase
      */
     protected function setUp(): void
     {
-        $urlGenerator = $this->createMock('Symfony\\Component\\Routing\\Generator\\UrlGeneratorInterface');
+        $urlGenerator = $this->createMock(UrlGeneratorInterface::class);
         $urlGenerator
           ->method('generate')
-          ->will($this->returnValue('/my-page'));
+          ->willReturn('/my-page');
 
         $this->authorizationChecker = $this->createMock(
-            'Symfony\\Component\\Security\\Core\\Authorization\\AuthorizationCheckerInterface'
+            AuthorizationCheckerInterface::class
         );
 
         $menuFactory = new MenuFactory();
         $menuFactory->addExtension(new RoutingExtension($urlGenerator));
 
-        $eventDispatcher = $this->createMock('Symfony\\Component\\EventDispatcher\\EventDispatcherInterface');
+        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
         $configuration = JbConfigKnpMenuExtensionTest::loadConfiguration();
 
         $this->configurationProvider = new ConfigurationMenuProvider(
@@ -56,7 +61,7 @@ class ConfigurationMenuProviderTest extends \PHPUnit\Framework\TestCase
     /**
      * test get
      */
-    public function testGet()
+    public function testGet(): void
     {
         $this->authorizationChecker
             ->method('isGranted')
@@ -125,8 +130,8 @@ class ConfigurationMenuProviderTest extends \PHPUnit\Framework\TestCase
 
         $position = 0;
         foreach ($menu->getChildren() as $key => $item) {
-            if ($key == 'first_item') {
-                $this->assertEquals(0, $position, 'First item postion');
+            if ($key === 'first_item') {
+                $this->assertEquals(0, $position, 'First item position');
             }
             $position++;
         }
@@ -157,7 +162,7 @@ class ConfigurationMenuProviderTest extends \PHPUnit\Framework\TestCase
     /**
      * test get with multiple menu
      */
-    public function testMultipleMenus()
+    public function testMultipleMenus(): void
     {
         $this->authorizationChecker
             ->method('isGranted')
@@ -180,7 +185,7 @@ class ConfigurationMenuProviderTest extends \PHPUnit\Framework\TestCase
     /**
      * test with roles
      */
-    public function testWithRolesNotGranted()
+    public function testWithRolesNotGranted(): void
     {
         $this->authorizationChecker
             ->method('isGranted')
@@ -197,7 +202,7 @@ class ConfigurationMenuProviderTest extends \PHPUnit\Framework\TestCase
     /**
      * test with roles
      */
-    public function testWithRolesGranted()
+    public function testWithRolesGranted(): void
     {
         $this->authorizationChecker
             ->method('isGranted')
@@ -206,7 +211,7 @@ class ConfigurationMenuProviderTest extends \PHPUnit\Framework\TestCase
         $menu = $this->configurationProvider->get('menu_roles');
 
         $this->assertInstanceOf(
-            'Knp\\Menu\\ItemInterface',
+            ItemInterface::class,
             $menu->getChild('item2'),
             'authenticated and rights'
         );

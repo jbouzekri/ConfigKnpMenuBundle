@@ -34,7 +34,7 @@ class NavigationConfiguration implements ConfigurationInterface
      *
      * @param string $rootName the menu root name
      */
-    public function setMenuRootName($rootName)
+    public function setMenuRootName(string $rootName): void
     {
         $this->rootName = $rootName;
     }
@@ -42,7 +42,7 @@ class NavigationConfiguration implements ConfigurationInterface
     /**
      * {@inheritDoc}
      */
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder($this->rootName, 'array', new MenuTreeBuilder());
 

@@ -6,24 +6,27 @@
 namespace Jb\Bundle\ConfigKnpMenuBundle\Tests\Event;
 
 use Jb\Bundle\ConfigKnpMenuBundle\Event\ConfigureMenuEvent;
+use Knp\Menu\FactoryInterface;
+use Knp\Menu\ItemInterface;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Tests for Jb\Bundle\ConfigKnpMenuBundle\Event\ConfigureMenuEvent
  */
-class ConfigureMenuEventTest extends \PHPUnit\Framework\TestCase
+class ConfigureMenuEventTest extends TestCase
 {
     /**
-     * @var \Jb\Bundle\ConfigKnpMenuBundle\Event\ConfigureMenuEvent
+     * @var ConfigureMenuEvent
      */
     protected $event;
 
     /**
-     * @var \Knp\Menu\FactoryInterface
+     * @var FactoryInterface
      */
     protected $factory;
 
     /**
-     * @var \Knp\Menu\ItemInterface
+     * @var ItemInterface
      */
     protected $menu;
 
@@ -32,8 +35,8 @@ class ConfigureMenuEventTest extends \PHPUnit\Framework\TestCase
      */
     public function setUp(): void
     {
-        $this->factory = $this->createMock('Knp\Menu\FactoryInterface');
-        $this->menu = $this->createMock('Knp\Menu\ItemInterface');
+        $this->factory = $this->createMock(FactoryInterface::class);
+        $this->menu = $this->createMock(ItemInterface::class);
 
         $this->event = new ConfigureMenuEvent($this->factory, $this->menu);
     }
@@ -41,7 +44,7 @@ class ConfigureMenuEventTest extends \PHPUnit\Framework\TestCase
     /**
      * test event getter
      */
-    public function testGetter()
+    public function testGetter(): void
     {
         $this->assertEquals($this->factory, $this->event->getFactory());
         $this->assertEquals($this->menu, $this->event->getMenu());

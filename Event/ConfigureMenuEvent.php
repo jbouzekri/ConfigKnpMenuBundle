@@ -24,42 +24,24 @@ use Symfony\Contracts\EventDispatcher\Event;
  */
 class ConfigureMenuEvent extends Event
 {
-    const CONFIGURE = 'jb_config.navigation.menu_configure';
+    public const CONFIGURE = 'jb_config.navigation.menu_configure';
 
-    /**
-     * @var \Knp\Menu\FactoryInterface
-     */
-    private $factory;
+    private FactoryInterface $factory;
 
-    /**
-     * @var \Knp\Menu\ItemInterface
-     */
-    private $menu;
+    private ItemInterface $menu;
 
-    /**
-     * Constructor
-     *
-     * @param \Knp\Menu\FactoryInterface $factory
-     * @param \Knp\Menu\ItemInterface $menu
-     */
     public function __construct(FactoryInterface $factory, ItemInterface $menu)
     {
         $this->factory = $factory;
         $this->menu = $menu;
     }
 
-    /**
-     * @return \Knp\Menu\FactoryInterface
-     */
-    public function getFactory()
+    public function getFactory(): FactoryInterface
     {
         return $this->factory;
     }
 
-    /**
-     * @return \Knp\Menu\ItemInterface
-     */
-    public function getMenu()
+    public function getMenu(): ItemInterface
     {
         return $this->menu;
     }
