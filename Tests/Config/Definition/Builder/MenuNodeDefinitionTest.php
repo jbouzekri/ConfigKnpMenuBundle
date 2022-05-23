@@ -40,7 +40,10 @@ use PHPUnit\Framework\TestCase;
  */
 class MenuNodeDefinitionTest extends TestCase
 {
-    protected MenuTreeBuilder|MockObject $builder;
+    /**
+     * @var MenuTreeBuilder|MockObject
+     */
+    protected $builder;
 
     protected MenuNodeDefinition $definition;
 
