@@ -40,7 +40,10 @@ use Jb\Bundle\ConfigKnpMenuBundle\Config\Definition\Builder\MenuNodeDefinition;
  */
 class MenuTreeBuilderTest extends TestCase
 {
-    protected MenuTreeBuilder $builder;
+    /**
+     * @var MenuTreeBuilder
+     */
+    protected $builder;
 
     /**
      * Init builder

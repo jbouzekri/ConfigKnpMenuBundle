@@ -46,7 +46,7 @@ class MenuNodeDefinitionTest extends TestCase
     protected $builder;
 
     /**
-     * @var MenuNodeDefinition 
+     * @var MenuNodeDefinition
      */
     protected $definition;
 
