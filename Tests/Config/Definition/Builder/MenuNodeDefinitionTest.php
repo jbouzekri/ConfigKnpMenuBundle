@@ -45,7 +45,10 @@ class MenuNodeDefinitionTest extends TestCase
      */
     protected $builder;
 
-    protected MenuNodeDefinition $definition;
+    /**
+     * @var MenuNodeDefinition 
+     */
+    protected $definition;
 
     /**
      * Init Mock
