@@ -121,6 +121,8 @@ class ConfigurationMenuProviderTest extends TestCase
               'key1' => 'value1',
               'key2' => 'value2',
               'routes' => array(
+                array('pattern' => '/^foo/'),
+                array('pattern' => '/^bar/'),
                 array('route' => 'my_route', 'parameters' => array('test' => 'test1'))
               )
             ),
