@@ -27,6 +27,9 @@ main:
             extras:
               key1: value1
               key2: value2
+              routes:
+                  - pattern: /^foo/
+                  - pattern: /^bar/
         four_item:
             label: "Four Item Label"
             order: 40
